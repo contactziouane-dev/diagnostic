@@ -1,0 +1,2895 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Les Réseaux Industriels — Présentation Académique (Data Show)</title>
+  <style>
+    /* ==========================================================================
+       CSS STYLES - LARGE PROJECTOR-OPTIMIZED TYPOGRAPHY & ZERO MULTI-CLICK
+       ========================================================================== */
+    :root {
+      --bg-canvas: #FAFAF7;
+      --bg-card: #FFFFFF;
+      --text-main: #14171A;
+      --text-muted: #2D3748;
+      --primary-navy: #162C46;
+      --primary-navy-dark: #0D1A2B;
+      --accent-teal: #1F6F7D;
+      --accent-teal-light: #EBF7F8;
+      --amber-alert: #B45309;
+      --amber-bg: #FEF8ED;
+      --border-subtle: #CBD5E1;
+      --border-strong: #94A3B8;
+      --shadow-card: 0 4px 14px rgba(0, 0, 0, 0.08);
+      --shadow-elevated: 0 12px 28px rgba(0, 0, 0, 0.16);
+      --dp-purple: #7E22CE;
+      --pa-blue: #0284C7;
+      --pn-green: #15803D;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #121418;
+      font-family: system-ui, -apple-system, "Segoe UI", Calibri, Roboto, sans-serif;
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Presentation Screen Stage - Fixed 1920x1080 canvas scaled to viewport */
+    #viewport-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #presentation-stage {
+      width: 1920px;
+      height: 1080px;
+      background-color: var(--bg-canvas);
+      position: absolute;
+      transform-origin: center center;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 50px rgba(0,0,0,0.5);
+      user-select: text;
+    }
+
+    /* Top Progress Bar */
+    #top-progress-track {
+      width: 100%;
+      height: 7px;
+      background: #E2E8F0;
+      position: relative;
+      z-index: 50;
+    }
+    #top-progress-bar {
+      height: 100%;
+      width: 4.54%;
+      background: linear-gradient(90deg, var(--primary-navy), var(--accent-teal));
+      transition: width 220ms ease-out;
+    }
+
+    /* Global Header */
+    #stage-header {
+      height: 56px;
+      padding: 0 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.95);
+    }
+    .stage-header-title {
+      font-family: Georgia, serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary-navy);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+    .stage-header-section {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent-teal);
+    }
+
+    /* Slide Deck Container */
+    #slide-deck {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: calc(1080px - 56px - 64px - 7px);
+    }
+
+    /* Each Slide */
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 28px 60px 18px 60px;
+      display: none;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateX(12px);
+      transition: opacity 200ms ease, transform 200ms ease;
+    }
+
+    .slide.active {
+      display: flex;
+      opacity: 1;
+      transform: translateX(0);
+      z-index: 10;
+    }
+
+    /* Slide Header Area */
+    .slide-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 3px solid var(--border-subtle);
+      position: relative;
+    }
+    .slide-header::after {
+      content: "";
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 160px;
+      height: 4px;
+      background: var(--accent-teal);
+    }
+
+    .doc-badge-pill {
+      display: inline-block;
+      font-size: 17px;
+      font-weight: 800;
+      background: #E2E8F0;
+      color: var(--primary-navy);
+      padding: 3px 12px;
+      border-radius: 6px;
+      margin-right: 10px;
+      letter-spacing: 0.8px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--accent-teal);
+      margin-bottom: 2px;
+    }
+    .slide-title {
+      font-family: Georgia, Cambria, "Times New Roman", serif;
+      font-size: 42px;
+      font-weight: 800;
+      color: var(--primary-navy);
+      line-height: 1.15;
+    }
+    .slide-subtitle {
+      font-size: 22px;
+      color: var(--text-muted);
+      margin-top: 3px;
+      font-weight: 500;
+    }
+
+    .badge-pill {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 20px;
+      background: var(--accent-teal-light);
+      color: var(--accent-teal);
+      font-size: 18px;
+      font-weight: 800;
+      border: 2px solid rgba(31, 111, 125, 0.3);
+    }
+
+    /* Slide Body Area */
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Footer Bar */
+    #stage-footer {
+      height: 64px;
+      padding: 0 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 2px solid var(--border-subtle);
+      background: #FFFFFF;
+      font-size: 20px;
+      color: var(--text-muted);
+      z-index: 50;
+    }
+    .footer-left {
+      font-weight: 700;
+      color: var(--primary-navy);
+    }
+    .footer-center {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-weight: 700;
+    }
+    .counter-badge {
+      background: #F1F5F9;
+      padding: 5px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      color: var(--primary-navy);
+      font-weight: 800;
+      font-size: 24px;
+    }
+
+    .editable-name {
+      display: inline-block;
+      padding: 4px 18px;
+      background: #EBF7F8;
+      color: #0F2942;
+      border-radius: 8px;
+      border: 1.5px solid #1F6F7D;
+      cursor: text;
+      font-weight: 800;
+      font-size: 24px;
+      letter-spacing: 0.4px;
+      min-width: 140px;
+      outline: none;
+      transition: all 150ms ease;
+    }
+    .editable-name:hover {
+      background: #D9F1F4;
+      border-color: #164E58;
+    }
+    .editable-name:focus {
+      background: #FFFFFF;
+      border-style: solid;
+      border-color: #1F6F7D;
+      box-shadow: 0 0 0 3px rgba(31, 111, 125, 0.3);
+    }
+    .intro-meta-box .editable-name {
+      font-size: 28px;
+      padding: 5px 22px;
+      color: #0F2942;
+    }
+    #stage-footer .editable-name {
+      font-size: 22px;
+      padding: 3px 14px;
+    }
+
+    /* Navigation Controls */
+    .screen-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-nav {
+      background: #FFFFFF;
+      border: 1px solid var(--border-strong);
+      color: var(--primary-navy);
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 150ms ease;
+    }
+    .btn-nav:hover {
+      background: var(--accent-teal);
+      color: #FFFFFF;
+      border-color: var(--accent-teal);
+      transform: translateY(-1px);
+    }
+
+    .side-nav-zone {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 55px;
+      height: 95px;
+      background: rgba(22, 44, 70, 0.15);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-navy);
+      font-size: 26px;
+      cursor: pointer;
+      opacity: 0.25;
+      transition: opacity 150ms ease, background 150ms ease;
+      z-index: 60;
+    }
+    .side-nav-zone:hover {
+      opacity: 1;
+      background: rgba(22, 44, 70, 0.9);
+      color: #FFFFFF;
+    }
+    .side-nav-prev { left: 8px; }
+    .side-nav-next { right: 8px; }
+
+    /* Layout Primitives */
+    .split-layout {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+    .col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .three-cols-wide {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      width: 100%;
+      height: 100%;
+      align-items: stretch;
+    }
+
+    /* Card Component */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 22px 26px;
+      box-shadow: var(--shadow-card);
+    }
+
+    /* Alerts and Retenir */
+    .alert-card {
+      border-left: 8px solid var(--accent-teal);
+      background: #F8FDFF;
+    }
+    .retenir-box {
+      border-left: 8px solid var(--amber-alert);
+      background: var(--amber-bg);
+      border-color: #FCD34D;
+      padding: 18px 24px;
+    }
+    .retenir-tag {
+      display: inline-block;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #92400E;
+      background: #FDE68A;
+      padding: 4px 12px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+    .curiosite-box {
+      border: 2px dashed var(--amber-alert);
+      background: #FFFBEB;
+      padding: 18px 24px;
+    }
+    .curiosite-title {
+      font-family: Georgia, serif;
+      font-size: 22px;
+      font-weight: bold;
+      color: #92400E;
+      margin-bottom: 6px;
+    }
+    .tip-box {
+      background: #F0FDF4;
+      border: 1px solid #86EFAC;
+      border-radius: 8px;
+      padding: 12px 18px;
+      font-size: 24px;
+      color: #166534;
+    }
+
+    /* ==========================================================================
+       PROMINENT LARGE IMAGES & CLICKABLE ZOOM / LIGHTBOX
+       ========================================================================== */
+    .zoomable-img-wrap {
+      position: relative;
+      cursor: zoom-in;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border-strong);
+      background: #FFFFFF;
+      box-shadow: var(--shadow-card);
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+    .zoomable-img-wrap:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-teal);
+      box-shadow: 0 10px 28px rgba(31, 111, 125, 0.3);
+    }
+    .zoomable-img-wrap::after {
+      content: "🔍 Cliquer pour agrandir";
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(15, 23, 42, 0.85);
+      color: #FFFFFF;
+      font-size: 16px;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 16px;
+      opacity: 0.9;
+      transition: all 150ms ease;
+      pointer-events: none;
+    }
+    .zoomable-img-wrap:hover::after {
+      opacity: 1;
+      background: var(--accent-teal);
+      transform: scale(1.04);
+    }
+
+    /* Large prominent image sizes */
+    .large-hero-img {
+      max-width: 100%;
+      max-height: 520px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+    .hero-capture-img {
+      max-width: 100%;
+      max-height: 480px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+    .pyramid-hero-img {
+      max-width: 100%;
+      max-height: 480px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+    .case-study-img {
+      max-width: 100%;
+      max-height: 380px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+    .dp-pa-thumb {
+      max-width: 100%;
+      max-height: 240px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .avant-apres-big-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      width: 100%;
+    }
+    .before-card-big, .after-card-big {
+      text-align: center;
+      padding: 16px;
+    }
+    .duo-big-img {
+      max-width: 100%;
+      max-height: 360px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+    .duo-caption {
+      font-size: 22px;
+      font-weight: 700;
+      color: #334155;
+      margin-top: 8px;
+    }
+
+    .type-card-big {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .type-col-img {
+      max-width: 100%;
+      max-height: 280px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .level-box {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 14px 18px;
+      box-shadow: var(--shadow-card);
+    }
+    .level-header-mini {
+      font-family: Georgia, serif;
+      font-weight: 800;
+      font-size: 26px;
+      color: var(--primary-navy);
+      margin-bottom: 4px;
+    }
+    .level-desc-mini {
+      font-size: 22px;
+      line-height: 1.35;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .level-thumbs-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .thumb-mini {
+      max-height: 85px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .proto-card-big {
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .proto-banner-img {
+      max-width: 100%;
+      max-height: 110px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+    .proto-content-list {
+      font-size: 24px;
+      line-height: 1.45;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .connectors-big-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      width: 100%;
+    }
+    .connector-quad-img {
+      max-width: 100%;
+      max-height: 220px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .caption {
+      margin-top: 8px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #334155;
+      text-align: center;
+      line-height: 1.35;
+    }
+
+    /* ==========================================================================
+       LARGE BOLD TYPOGRAPHY (PROJECTOR / DATA SHOW OPTIMIZED)
+       ========================================================================== */
+    .main-title {
+      font-family: Georgia, serif;
+      font-size: 58px;
+      font-weight: 800;
+      color: var(--primary-navy);
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    .sub-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent-teal);
+      margin-bottom: 14px;
+      line-height: 1.25;
+    }
+    .baseline {
+      font-size: 22px;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+      line-height: 1.35;
+    }
+    .lead-text {
+      font-size: 24px;
+      line-height: 1.45;
+      color: var(--text-main);
+    }
+    .section-heading {
+      font-family: Georgia, serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--primary-navy);
+      margin-bottom: 10px;
+    }
+    .academic-badge {
+      display: inline-block;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--primary-navy);
+      background: #E2E8F0;
+      padding: 5px 16px;
+      border-radius: 6px;
+      margin-bottom: 14px;
+    }
+
+    /* Large Bullet Lists */
+    .bullet-list-lg {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 22px;
+      line-height: 1.4;
+    }
+    .bullet-list-lg li {
+      position: relative;
+      padding-left: 28px;
+    }
+    .bullet-list-lg li::before {
+      content: "•";
+      position: absolute;
+      left: 6px;
+      color: var(--accent-teal);
+      font-size: 26px;
+      top: -2px;
+    }
+
+    .bullet-list-sm {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 20px;
+      line-height: 1.4;
+    }
+    .bullet-list-sm li {
+      position: relative;
+      padding-left: 26px;
+    }
+    .bullet-list-sm li::before {
+      content: "•";
+      position: absolute;
+      left: 6px;
+      color: var(--accent-teal);
+      font-size: 24px;
+    }
+
+    /* Quote Card */
+    .quote-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-left: 8px solid var(--primary-navy);
+      border-radius: 12px;
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      box-shadow: var(--shadow-card);
+    }
+    .quote-mark {
+      font-family: Georgia, serif;
+      font-size: 75px;
+      line-height: 0.6;
+      color: var(--accent-teal);
+      opacity: 0.6;
+    }
+    .quote-text {
+      font-family: Georgia, serif;
+      font-size: 28px;
+      font-style: italic;
+      color: var(--primary-navy);
+      line-height: 1.35;
+    }
+
+    /* Plan Grid */
+    .plan-grid-doc {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 1500px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .plan-doc-item {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 12px 22px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      box-shadow: var(--shadow-card);
+    }
+    .plan-bullet {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--primary-navy);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .plan-doc-text {
+      font-size: 22px;
+      color: var(--text-main);
+    }
+
+    /* Timeline Steps */
+    .timeline-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .timeline-step {
+      display: flex;
+      gap: 18px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 12px 18px;
+      align-items: center;
+    }
+    .timeline-year {
+      font-family: Georgia, serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--dp-purple);
+      min-width: 100px;
+    }
+    .timeline-content {
+      font-size: 24px;
+      line-height: 1.35;
+      color: var(--text-main);
+    }
+
+    /* Badges & Highlights */
+    .green-text { color: #15803D !important; }
+    .red-text { color: #DC2626 !important; }
+    .purple-text { color: #7E22CE !important; }
+    .blue-text { color: #0284C7 !important; }
+    .teal-text { color: #0D9488 !important; }
+
+    .badge-specifique { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+    .badge-homogene { background: #F0FDF4; color: #16A34A; border: 1px solid #BBF7D0; }
+    .badge-heterogene { background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE; }
+    .type-pill {
+      padding: 5px 14px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 19px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
+    .proto-badge-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 18px;
+      font-weight: 800;
+      margin: 2px;
+    }
+    .blue-tag { background: #E0F2FE; color: #0369A1; }
+    .dark-tag { background: #F1F5F9; color: #334155; }
+    .slate-tag { background: #E2E8F0; color: #475569; }
+    .yellow-tag { background: #FEF3C7; color: #92400E; }
+    .green-tag { background: #DCFCE7; color: #15803D; }
+    .purple-tag { background: #FAF5FF; color: #7E22CE; }
+    .green-dark-tag { background: #D1FAE5; color: #065F46; }
+    .red-tag { background: #FEE2E2; color: #B91C1C; }
+    .orange-tag { background: #FFEDD5; color: #C2410C; }
+    .teal-tag { background: #CCFBF1; color: #0F766E; }
+    .navy-tag { background: #E2E8F0; color: #1F3A5F; }
+    .gray-tag { background: #F1F5F9; color: #475569; }
+
+    .consequence-pill {
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 22px;
+      margin-top: 10px;
+    }
+    .red-consequence { background: #FEF2F2; color: #B91C1C; border: 1px solid #FECACA; }
+    .green-consequence { background: #F0FDF4; color: #15803D; border: 1px solid #BBF7D0; }
+
+    .badge-dp { background: #FAF5FF; color: #7E22CE; border: 1px solid #C084FC; font-weight: 800; padding: 5px 12px; border-radius: 6px; display: inline-block; margin-bottom: 8px; }
+    .badge-pa { background: #F0F9FF; color: #0284C7; border: 1px solid #7DD3FC; font-weight: 800; padding: 5px 12px; border-radius: 6px; display: inline-block; margin-bottom: 8px; }
+
+    .academic-check-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #F59E0B;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    .code-badge {
+      font-family: Consolas, monospace;
+      background: #F1F5F9;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle);
+      font-size: 22px;
+      color: #0F172A;
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       FULL-SCREEN LIGHTBOX OVERLAY (CLICK TO ZOOM PHOTO)
+       ========================================================================== */
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(10, 15, 25, 0.95);
+      backdrop-filter: blur(8px);
+      z-index: 2000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+    }
+    .lightbox-overlay.open {
+      display: flex;
+    }
+    .lightbox-header {
+      width: 100%;
+      max-width: 1600px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      color: #FFFFFF;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .lightbox-title {
+      font-family: Georgia, serif;
+      font-size: 24px;
+      font-weight: bold;
+      color: #F8FAFC;
+    }
+    .lightbox-actions {
+      display: flex;
+      gap: 12px;
+    }
+    .lightbox-btn {
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
+      padding: 8px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 18px;
+      transition: all 150ms ease;
+    }
+    .lightbox-btn:hover {
+      background: var(--accent-teal);
+      border-color: var(--accent-teal);
+    }
+    .lightbox-btn.close-btn {
+      background: #DC2626;
+      border-color: #DC2626;
+      font-size: 20px;
+    }
+    .lightbox-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      width: 100%;
+      max-width: 1700px;
+      padding: 15px 0;
+    }
+    #lightbox-img {
+      max-width: 95vw;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+      transition: transform 150ms ease-out;
+      transform: scale(1);
+    }
+    .lightbox-hint {
+      color: #CBD5E1;
+      font-size: 18px;
+      padding: 8px;
+    }
+
+    /* Standard Modals (Overview O & Notes S & Help H) */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.78);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal-box {
+      background: #FFFFFF;
+      border-radius: 14px;
+      box-shadow: var(--shadow-elevated);
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #overview-modal .modal-box { width: 1400px; height: 820px; }
+    .modal-header {
+      padding: 18px 28px;
+      background: var(--primary-navy);
+      color: #FFFFFF;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h3 { font-family: Georgia, serif; font-size: 24px; font-weight: bold; }
+    .modal-close-btn { background: none; border: none; color: #FFFFFF; font-size: 28px; cursor: pointer; line-height: 1; }
+
+    .overview-grid {
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      background: #F8FAFC;
+    }
+    .overview-card {
+      background: #FFFFFF;
+      border: 2px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 150ms ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 130px;
+    }
+    .overview-card:hover { border-color: var(--accent-teal); transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,0,0,0.1); }
+    .overview-card.current { border-color: var(--dp-purple); background: #FAF5FF; }
+    .ov-num { font-family: Georgia, serif; font-size: 22px; font-weight: 800; color: var(--accent-teal); }
+    .ov-sec { font-size: 12px; font-weight: 700; color: #475569; text-transform: uppercase; }
+    .ov-title { font-size: 15px; font-weight: 700; color: var(--primary-navy); line-height: 1.25; }
+    .ov-badge { font-size: 12px; font-weight: 700; color: #0284C7; }
+
+    #notes-modal .modal-box { width: 720px; max-height: 550px; }
+    .notes-content-wrap { padding: 24px 28px; overflow-y: auto; }
+    .notes-slide-title { font-family: Georgia, serif; font-size: 22px; font-weight: bold; color: var(--primary-navy); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border-subtle); }
+    .notes-body { font-size: 22px; line-height: 1.5; color: #1E293B; background: #F1F5F9; border-left: 6px solid var(--accent-teal); padding: 18px 22px; border-radius: 6px; }
+
+    #help-modal .modal-box { width: 620px; }
+    .help-table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 18px; }
+    .help-table td { padding: 12px 16px; border-bottom: 1px solid var(--border-subtle); }
+    .help-table td:first-child { font-weight: bold; color: var(--primary-navy); width: 42%; }
+
+    /* Print Stylesheet */
+    @media print {
+      @page { size: 16in 9in; margin: 0; }
+      html, body { width: 100% !important; height: auto !important; overflow: visible !important; background: #FFFFFF !important; }
+      #viewport-container { width: 100% !important; height: auto !important; display: block !important; }
+      #presentation-stage { position: static !important; transform: none !important; width: 100% !important; height: auto !important; box-shadow: none !important; }
+      #top-progress-track, #stage-header, #stage-footer, .side-nav-zone, .modal-overlay, .lightbox-overlay { display: none !important; }
+      #slide-deck { height: auto !important; position: static !important; }
+      .slide { display: flex !important; opacity: 1 !important; transform: none !important; position: relative !important; width: 100vw !important; height: 100vh !important; page-break-after: always !important; break-after: page !important; padding: 40px !important; }
+    }
+  </style>
+</head>
+<body>
+  <div id="viewport-container">
+    <div id="presentation-stage">
+      
+      <!-- Top Progress Bar -->
+      <div id="top-progress-track">
+        <div id="top-progress-bar"></div>
+      </div>
+
+      <!-- Stage Header -->
+      <header id="stage-header">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <img src="assets/logo_esg2e.png" alt="Logo ESG2E Oran" style="height: 38px; width: auto; object-fit: contain;">
+          <div style="display: flex; flex-direction: column;">
+            <span class="stage-header-title" style="font-size: 22px; line-height: 1.1;">LES RÉSEAUX INDUSTRIELS</span>
+            <span style="font-size: 13px; font-weight: 700; color: #475569; letter-spacing: 0.4px;">École Supérieure en Génie Électrique et Énergétique d'Oran (ESG2E)</span>
+          </div>
+        </div>
+        <div class="stage-header-section" id="current-section-name">INTRODUCTION GÉNÉRALE</div>
+      </header>
+
+      <!-- Side Quick Nav Targets -->
+      <div class="side-nav-zone side-nav-prev" onclick="stepPrev()" title="Diapositive précédente (←)">◀</div>
+      <div class="side-nav-zone side-nav-next" onclick="stepNext()" title="Diapositive suivante (→)">▶</div>
+
+      <!-- Slide Deck -->
+      <main id="slide-deck">
+        
+    <!-- Slide 1 (COUVERTURE) -->
+    <section class="slide active" id="slide-1" data-slide-index="1" data-section="INTRODUCTION">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">COUVERTURE</div>
+          <span class="section-tag">INTRODUCTION</span>
+          <h2 class="slide-title">LES RÉSEAUX INDUSTRIELS</h2>
+          <div class="slide-subtitle">Architecture, technologies et protocoles de communication</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">ESG2E ORAN</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+
+        <div class="split-layout">
+          <div class="col text-col" style="flex: 1.2;">
+            <!-- School Brand / Affiliation Banner -->
+            <div class="school-affiliation-banner" style="display: flex; align-items: center; gap: 18px; margin-bottom: 16px; background: #FFFFFF; padding: 12px 20px; border-radius: 12px; border: 1.5px solid var(--border-subtle); box-shadow: var(--shadow-card);">
+              <img src="assets/logo_esg2e.png" alt="Logo ESG2E Oran" style="height: 70px; width: auto; object-fit: contain;">
+              <div style="display: flex; flex-direction: column;">
+                <span style="font-family: Georgia, serif; font-size: 21px; font-weight: 800; color: var(--primary-navy); line-height: 1.25;">
+                  École Supérieure en Génie Électrique et Énergétique d'Oran
+                </span>
+                <span style="font-size: 16px; font-weight: 700; color: var(--accent-teal); letter-spacing: 0.6px; margin-top: 2px;">
+                  ESG2E ORAN · DÉPARTEMENT AUTOMATIQUE &amp; INFORMATIQUE INDUSTRIELLE
+                </span>
+              </div>
+            </div>
+
+            <h1 class="main-title" style="font-size: 58px; line-height: 1.1; margin-bottom: 10px;">LES RÉSEAUX INDUSTRIELS</h1>
+            <h2 class="sub-title" style="font-size: 30px; margin-bottom: 10px;">Architecture, technologies et protocoles de communication</h2>
+            <p class="baseline" style="font-size: 24px; margin-bottom: 16px;">De la communication entre capteurs et automates jusqu'aux réseaux Ethernet industriels</p>
+            
+            <div class="card intro-meta-box">
+              <div class="meta-item" style="font-size: 26px; display: flex; align-items: center; gap: 12px;">
+                <span class="meta-label">Présentateur :</span> 
+                <span class="editable-name" contenteditable="true" spellcheck="false" title="Cliquez pour éditer votre nom">Ziouane Fethi</span>
+              </div>
+              <div class="meta-item" style="font-size: 22px;">
+                <span class="meta-label">Établissement :</span> 
+                <strong>École Supérieure en Génie Électrique et Énergétique d'Oran (ESG2E)</strong>
+              </div>
+              <div class="meta-item" style="font-size: 22px;"><span class="meta-label">Spécialité :</span> Automatique &amp; Informatique industrielle</div>
+              <div class="meta-item" style="font-size: 22px;"><span class="meta-label">Date :</span> Novembre 2026</div>
+              <div class="meta-item" style="font-size: 20px;"><span class="meta-label">Navigation :</span> <kbd>→</kbd> <kbd>Espace</kbd> diapo suivante · <kbd>←</kbd> précédente · <kbd>F</kbd> plein écran · <kbd>S</kbd> notes</div>
+            </div>
+            
+            <div class="tip-box" style="margin-top: 14px; font-size: 22px;">
+              💡 <em>Toutes les photos et schémas sont <strong>cliquables</strong> pour les agrandir en plein écran !</em>
+            </div>
+          </div>
+
+          <div class="col media-col" style="flex: 1.05; align-items: center;">
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image1.jpeg', 'Armoire d'automatisation moderne : automate programmable Siemens, pupitre IHM et cellule robotisée')">
+              <img src="assets/image1.jpeg" class="large-hero-img" style="max-height: 500px;" alt="Armoire d'automatisation moderne avec pupitre tactile et robot">
+            </div>
+            <div class="caption">Armoire d'automatisation moderne : automates, pupitre tactile IHM et cellule robotique</div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 2 (PLAN) -->
+    <section class="slide " id="slide-2" data-slide-index="2" data-section="SOMMAIRE">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">PLAN</div>
+          <span class="section-tag">SOMMAIRE</span>
+          <h2 class="slide-title">Plan général de la présentation</h2>
+          <div class="slide-subtitle">Les neuf étapes clés de notre cours</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">Sommaire</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="plan-grid-doc">
+          <div class="plan-doc-item">
+            <span class="plan-bullet">1</span>
+            <div class="plan-doc-text"><strong>Introduction et problématique du câblage</strong> traditionnel point-à-point</div>
+          </div>
+          <div class="plan-doc-item">
+            <span class="plan-bullet">2</span>
+            <div class="plan-doc-text"><strong>Évolution historique</strong> des réseaux de communication industriels</div>
+          </div>
+          <div class="plan-doc-item">
+            <span class="plan-bullet">3</span>
+            <div class="plan-doc-text"><strong>Classification selon le type</strong> et le degré d'ouverture (spécifique, homogène, hétérogène)</div>
+          </div>
+          <div class="plan-doc-item">
+            <span class="plan-bullet">4</span>
+            <div class="plan-doc-text"><strong>Classification selon les niveaux</strong> de l'usine (Pyramide CIM : Terrain, Atelier, Usine)</div>
+          </div>
+          <div class="plan-doc-item">
+            <span class="plan-bullet">5</span>
+            <div class="plan-doc-text"><strong>Présentation détaillée de PROFIBUS-DP et PROFIBUS-PA</strong> (RS-485, MBP, connectique DB9)</div>
+          </div>
+          <div class="plan-doc-item">
+            <span class="plan-bullet">6</span>
+            <div class="plan-doc-text"><strong>4–20 mA, modules AI</strong>, connecteurs, câbles et <strong>coupleur DP/PA</strong></div>
+          </div>
+          <div class="plan-doc-item">
+            <span class="plan-bullet">7</span>
+            <div class="plan-doc-text"><strong>Ethernet, Internet et PROFINET</strong> (Ethernet adapté aux exigences industrielles)</div>
+          </div>
+          <div class="plan-doc-item">
+            <span class="plan-bullet">8</span>
+            <div class="plan-doc-text"><strong>Adresses de station, IP, MAC, nom PROFINET</strong> et pile TCP/IP</div>
+          </div>
+          <div class="plan-doc-item">
+            <span class="plan-bullet">9</span>
+            <div class="plan-doc-text"><strong>Architecture industrielle complète</strong> intégrée et conclusion générale</div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 3 (INTRODUCTION) -->
+    <section class="slide " id="slide-3" data-slide-index="3" data-section="INTRODUCTION">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">INTRODUCTION</div>
+          <span class="section-tag">INTRODUCTION</span>
+          <h2 class="slide-title">Remarque importante</h2>
+          <div class="slide-subtitle">Comprendre les principes fondamentaux plutôt que d'accumuler des détails de normes</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">Démarche</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="card alert-card" style="margin-bottom: 25px;">
+          <div class="alert-header">
+            <span class="alert-icon">💡</span>
+            <span class="alert-title">Une première approche des réseaux industriels</span>
+          </div>
+          <p class="lead-text">
+            Cette présentation constitue une <strong>première approche des réseaux industriels</strong>. Ce domaine étant très vaste et en constante évolution, l'objectif n'est pas d'en explorer tous les aspects, mais plutôt de présenter les notions essentielles adaptées à notre niveau, de susciter votre curiosité et de vous encourager à approfondir vos connaissances dans ce domaine.
+          </p>
+        </div>
+
+        <div class="quote-card">
+          <div class="quote-mark">«</div>
+          <div class="quote-body">
+            <p class="quote-text">Le plus important n'est pas de tout connaître, mais de savoir où commencer à apprendre.</p>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 4 (DIAPOSITIVE 1) -->
+    <section class="slide " id="slide-4" data-slide-index="4" data-section="1. PROBLÉMATIQUE DU CÂBLAGE">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPOSITIVE 1</div>
+          <span class="section-tag">1. PROBLÉMATIQUE DU CÂBLAGE</span>
+          <h2 class="slide-title">Diapositive 1 — Pourquoi les réseaux industriels ?</h2>
+          <div class="slide-subtitle">Introduction et problématique : De la multiplication des câbles à la communication industrielle</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">Diapositive 1</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="split-layout">
+          <div class="col text-col" style="flex: 1.15;">
+            <div class="card detail-card">
+              <h3 class="section-heading red-text">La problématique du câblage traditionnel :</h3>
+              <p style="font-size: 28px; line-height: 1.45; margin-bottom: 14px;">Dans les installations traditionnelles, chaque capteur et chaque actionneur doit souvent être relié <strong>individuellement</strong> au système de commande :</p>
+              <ul class="bullet-list-lg">
+                <li><strong>Multiplication des câbles et des connexions :</strong> 1 paire de fils par signal TOR ou analogique.</li>
+                <li><strong>Armoires électriques de plus en plus encombrées :</strong> goulottes saturées et surchauffe.</li>
+                <li><strong>Installation et maintenance très complexes :</strong> repérage fastidieux fil par fil.</li>
+                <li><strong>Difficulté à localiser rapidement une panne :</strong> arrêt prolongé de la ligne.</li>
+                <li><strong>Risques élevés de perturbations (CEM) :</strong> parasites entre puissance et commande.</li>
+              </ul>
+            </div>
+
+            <div class="card curiosite-box" style="margin-top: 15px;">
+              <div class="curiosite-title">🔎 Petite curiosité</div>
+              <p style="font-size: 26px; line-height: 1.4;">
+                Imaginez une usine avec <strong>plusieurs centaines ou milliers de capteurs et d'actionneurs</strong> : faut-il vraiment tirer un câble individuel pour chaque information jusqu'à l'automate ?
+              </p>
+            </div>
+          </div>
+
+          <div class="col media-col" style="flex: 1.15; align-items: center;">
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image2.jpeg', 'Capture réelle d\'une armoire électrique traditionnelle au câblage saturé et anarchique (plat de spaghettis)')">
+              <img src="assets/image2.jpeg" class="large-hero-img" alt="Armoire électrique traditionnelle au câblage encombré">
+            </div>
+            <div class="caption">Armoire électrique traditionnelle : encombrement extrême, risques CEM et dépannage complexe</div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 5 (DIAPOSITIVE 2) -->
+    <section class="slide " id="slide-5" data-slide-index="5" data-section="1. PROBLÉMATIQUE DU CÂBLAGE">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPOSITIVE 2</div>
+          <span class="section-tag">1. PROBLÉMATIQUE DU CÂBLAGE</span>
+          <h2 class="slide-title">Diapositive 2 — L'évolution vers les réseaux industriels</h2>
+          <div class="slide-subtitle">La solution : Une nouvelle façon de communiquer dans l'industrie</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">Diapositive 2</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="split-layout">
+          <!-- Col Gauche : Avant / Après en très grand -->
+          <div class="col" style="flex: 1.3;">
+            <div class="avant-apres-big-grid">
+              <div class="card before-card-big">
+                <div class="duo-header red-text">AVANT : Câblage traditionnel</div>
+                <div class="zoomable-img-wrap" onclick="openLightbox('assets/image3.jpeg', 'Avant : Câblage traditionnel fil à fil individuel')">
+                  <img src="assets/image3.jpeg" class="duo-big-img" alt="Câblage traditionnel point à point">
+                </div>
+                <p class="duo-caption">Une liaison individuelle pour chaque signal.</p>
+              </div>
+
+              <div class="card after-card-big">
+                <div class="duo-header green-text">APRÈS : Communication en réseau</div>
+                <div class="zoomable-img-wrap" onclick="openLightbox('assets/image4.jpeg', 'Après : Communication moderne en réseau commun partagé')">
+                  <img src="assets/image4.jpeg" class="duo-big-img" alt="Communication en réseau bus">
+                </div>
+                <p class="duo-caption">Équipements reliés par un bus commun.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Col Droite : Synthèse & Avantages -->
+          <div class="col" style="flex: 1;">
+            <div class="card detail-card">
+              <h3 class="section-heading green-text">La solution : Les réseaux industriels</h3>
+              <p style="font-size: 26px; line-height: 1.45; margin-bottom: 15px;">
+                Relier les équipements (capteurs, variateurs, automates, supervision) pour échanger des données à travers des protocoles normalisés.
+              </p>
+
+              <h4 class="card-title" style="font-size: 28px; margin-top: 10px;">Les principaux avantages :</h4>
+              <ul class="bullet-list-lg">
+                <li><strong>Réduction drastique du câblage</strong> de communication.</li>
+                <li><strong>Échange rapide et bidirectionnel</strong> des données.</li>
+                <li><strong>Diagnostic et maintenance facilités</strong> (états d'erreurs).</li>
+                <li><strong>Intégration et extension simples</strong> de l'installation.</li>
+              </ul>
+            </div>
+
+            <div class="card retenir-box" style="margin-top: 15px;">
+              <span class="retenir-tag">TRANSITION VERS LA SUITE</span>
+              <p style="font-size: 25px; line-height: 1.4;">Comment ces réseaux sont-ils classés et à quel niveau de l'usine sont-ils utilisés ?</p>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 6 (DIAPOSITIVE 3) -->
+    <section class="slide " id="slide-6" data-slide-index="6" data-section="2. CLASSIFICATIONS">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPOSITIVE 3</div>
+          <span class="section-tag">2. CLASSIFICATIONS</span>
+          <h2 class="slide-title">Diapositive 3 — Classification selon le type de réseau</h2>
+          <div class="slide-subtitle">Distinguer les réseaux selon la manière dont les équipements et fabricants communiquent</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">Diapositive 3</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="three-cols-wide">
+          <!-- 1. Spécifique -->
+          <div class="card type-card-big">
+            <div class="type-pill badge-specifique">1. Réseau Spécifique (Propriétaire)</div>
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image5.jpeg', 'Réseau spécifique propriétaire : architecture constructeur Fuji Electric SX bus et T-link')">
+              <img src="assets/image5.jpeg" class="type-col-img" alt="Réseau spécifique propriétaire">
+            </div>
+            <ul class="bullet-list-sm" style="margin-top: 14px; font-size: 25px;">
+              <li>Conçu pour fonctionner avec les équipements d'un fabricant donné.</li>
+              <li>Solutions de communication propres à ce fabricant.</li>
+              <li>Interconnexion externe nécessitant des adaptations.</li>
+            </ul>
+          </div>
+
+          <!-- 2. Homogène -->
+          <div class="card type-card-big">
+            <div class="type-pill badge-homogene">2. Réseau Homogène</div>
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image6.jpeg', 'Réseau homogène : installation complète basée sur un seul fabricant (Siemens)')">
+              <img src="assets/image6.jpeg" class="type-col-img" alt="Réseau homogène monomarque">
+            </div>
+            <ul class="bullet-list-sm" style="margin-top: 14px; font-size: 25px;">
+              <li>Équipements provenant d'un <strong>même fabricant</strong>.</li>
+              <li>Configuration et intégration logicielle unifiées et simples.</li>
+              <li>Même environnement technologique d'usine.</li>
+            </ul>
+          </div>
+
+          <!-- 3. Hétérogène -->
+          <div class="card type-card-big">
+            <div class="type-pill badge-heterogene">3. Réseau Hétérogène</div>
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image7.jpeg', 'Réseau hétérogène : cohabitation de marques différentes (Siemens, Allen-Bradley) via des standards ouverts')">
+              <img src="assets/image7.jpeg" class="type-col-img" alt="Réseau hétérogène multimarques">
+            </div>
+            <ul class="bullet-list-sm" style="margin-top: 14px; font-size: 25px;">
+              <li>Équipements de <strong>fabricants différents</strong>.</li>
+              <li>Repose sur des <strong>standards ouverts</strong> normalisés.</li>
+              <li>Favorise l'interopérabilité sans dépendance captive.</li>
+            </ul>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 7 (DIAPOSITIVE 4) -->
+    <section class="slide " id="slide-7" data-slide-index="7" data-section="2. CLASSIFICATIONS">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPOSITIVE 4</div>
+          <span class="section-tag">2. CLASSIFICATIONS</span>
+          <h2 class="slide-title">Diapositive 4 — Classification selon le niveau du réseau</h2>
+          <div class="slide-subtitle">Titre : Les trois niveaux de communication dans une installation industrielle (Pyramide)</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">Diapositive 4</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="split-layout">
+          <!-- Col Gauche : Pyramide en TRÈS GRAND -->
+          <div class="col" style="flex: 1.35; align-items: center;">
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image8.jpeg', 'The Industrial Automation Pyramid : Level 0 Sensors -> Level 1 PLC Control -> Level 2 SCADA Supervisory -> Level 3 MES Management -> Level 4 ERP Enterprise')">
+              <img src="assets/image8.jpeg" class="pyramid-hero-img" alt="The Industrial Automation Pyramid">
+            </div>
+            <div class="caption">La Pyramide de l'automatisation industrielle : du terrain jusqu'à l'entreprise (Cliquez pour agrandir)</div>
+            
+            <div class="card retenir-box" style="margin-top: 15px; width: 100%;">
+              <span class="retenir-tag">À RETENIR POUR CETTE PARTIE</span>
+              <p style="font-size: 26px; line-height: 1.45;">
+                • <strong>Type de réseau :</strong> <em>Comment les équipements et fabricants sont-ils organisés ?</em><br>
+                • <strong>Niveau de réseau :</strong> <em>Où se situe la communication dans l'architecture industrielle ?</em>
+              </p>
+            </div>
+          </div>
+
+          <!-- Col Droite : Les 3 niveaux -->
+          <div class="col" style="flex: 0.95;">
+            <div class="level-box">
+              <div class="level-header-mini">1. Niveau terrain (Field Level)</div>
+              <p class="level-desc-mini">Au plus près du procédé : capteurs, transmetteurs, vannes, mesure et acquisition des grandeurs physiques.</p>
+              <div class="level-thumbs-row">
+                <div class="zoomable-img-wrap" onclick="openLightbox('assets/image9.jpeg', 'Vanne de régulation Fisher Design GX avec instrument Fieldvue')">
+                  <img src="assets/image9.jpeg" class="thumb-mini" alt="Vanne de régulation">
+                </div>
+                <div class="zoomable-img-wrap" onclick="openLightbox('assets/image10.jpeg', 'Transmetteurs de pression montés sur manifold')">
+                  <img src="assets/image10.jpeg" class="thumb-mini" alt="Transmetteurs de pression">
+                </div>
+              </div>
+            </div>
+
+            <div class="level-box" style="margin-top: 12px;">
+              <div class="level-header-mini">2. Niveau atelier (Cell / Workshop Level)</div>
+              <p class="level-desc-mini">Au niveau des machines : automates programmables (API/PLC), modules d'E/S, variateurs, commande et coordination.</p>
+              <div class="level-thumbs-row">
+                <div class="zoomable-img-wrap" onclick="openLightbox('assets/image11.jpeg', 'Armoire de commande avec variateurs de vitesse et automate S7')">
+                  <img src="assets/image11.jpeg" class="thumb-mini" style="max-height: 85px;" alt="Armoire d'atelier variateurs">
+                </div>
+              </div>
+            </div>
+
+            <div class="level-box" style="margin-top: 12px;">
+              <div class="level-header-mini">3. Niveau usine (Plant / Factory Level)</div>
+              <p class="level-desc-mini">À l'échelle globale de l'usine : supervision SCADA, serveurs, postes opérateurs, suivi et gestion de la production.</p>
+              <div class="level-thumbs-row">
+                <div class="zoomable-img-wrap" onclick="openLightbox('assets/image12.jpeg', 'Poste opérateur en salle de contrôle SCADA')">
+                  <img src="assets/image12.jpeg" class="thumb-mini" style="max-height: 85px;" alt="Salle de contrôle SCADA">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 8 (DIAPOSITIVE 5) -->
+    <section class="slide " id="slide-8" data-slide-index="8" data-section="2. CLASSIFICATIONS">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPOSITIVE 5</div>
+          <span class="section-tag">2. CLASSIFICATIONS</span>
+          <h2 class="slide-title">Diapositive 5 — Les protocoles selon le niveau industriel</h2>
+          <div class="slide-subtitle">Titre proposé : Quels protocoles utilise-t-on à chaque niveau de l'industrie ?</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">Diapositive 5</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="three-cols-wide">
+          <!-- 1. Niveau terrain -->
+          <div class="card proto-card-big">
+            <div class="proto-col-header field-head">
+              <span class="proto-num-tag">1. NIVEAU TERRAIN</span>
+              <div class="proto-col-title">Capteurs et actionneurs</div>
+            </div>
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image13.png', 'Bandeau des capteurs et transmetteurs de terrain')">
+              <img src="assets/image13.png" class="proto-banner-img" alt="Capteurs de terrain">
+            </div>
+            <div class="zoomable-img-wrap" style="margin-top: 8px;" onclick="openLightbox('assets/image14.jpeg', 'Équipements AS-Interface : AS-i Master, AS-i Node, câble jaune profilé')">
+              <img src="assets/image14.jpeg" class="proto-banner-img" alt="Matériel AS-i">
+            </div>
+            <div class="proto-content-list" style="margin-top: 10px;">
+              <p><strong>Équipements :</strong> Capteurs pression, température, débit, vannes.</p>
+              <p><strong>Protocoles :</strong> <span class="proto-badge-tag blue-tag">PROFIBUS PA</span> <span class="proto-badge-tag dark-tag">HART</span> <span class="proto-badge-tag slate-tag">FF</span> <span class="proto-badge-tag yellow-tag">AS-i</span> <span class="proto-badge-tag green-tag">IO-Link</span></p>
+              <p class="proto-role-txt"><strong>Rôle :</strong> Relier les instruments de terrain aux systèmes de contrôle.</p>
+            </div>
+          </div>
+
+          <!-- 2. Niveau atelier -->
+          <div class="card proto-card-big">
+            <div class="proto-col-header cell-head">
+              <span class="proto-num-tag">2. NIVEAU ATELIER</span>
+              <div class="proto-col-title">Automates et machines</div>
+            </div>
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image15.png', 'Bandeau armoires d\'automates reliées en PROFINET vert')">
+              <img src="assets/image15.png" class="proto-banner-img" alt="Armoires d'automates PROFINET">
+            </div>
+            <div class="proto-content-list" style="margin-top: 16px;">
+              <p><strong>Équipements :</strong> Automates (API/PLC), variateurs, E/S déportées, IHM.</p>
+              <p><strong>Protocoles :</strong> <span class="proto-badge-tag purple-tag">PROFIBUS DP</span> <span class="proto-badge-tag green-dark-tag">PROFINET</span> <span class="proto-badge-tag red-tag">EtherNet/IP</span> <span class="proto-badge-tag orange-tag">Modbus</span> <span class="proto-badge-tag teal-tag">EtherCAT</span></p>
+              <p class="proto-role-txt"><strong>Rôle :</strong> Assurer les échanges rapides entre automates, variateurs et machines.</p>
+            </div>
+          </div>
+
+          <!-- 3. Niveau usine -->
+          <div class="card proto-card-big">
+            <div class="proto-col-header plant-head">
+              <span class="proto-num-tag">3. NIVEAU USINE</span>
+              <div class="proto-col-title">Supervision et gestion</div>
+            </div>
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image16.jpeg', 'Schéma d\'usine complet : Factory Network, MES Server, SCADA, ERP, Office Network')">
+              <img src="assets/image16.jpeg" class="proto-banner-img" style="max-height: 150px;" alt="Réseau d'usine SCADA MES ERP">
+            </div>
+            <div class="proto-content-list" style="margin-top: 10px;">
+              <p><strong>Équipements :</strong> Serveurs SCADA, postes de supervision, MES, ERP.</p>
+              <p><strong>Protocoles :</strong> <span class="proto-badge-tag navy-tag">Ethernet TCP/IP</span> <span class="proto-badge-tag teal-tag">OPC UA</span> <span class="proto-badge-tag dark-tag">Modbus TCP</span> <span class="proto-badge-tag purple-tag">MQTT</span></p>
+              <p class="proto-role-txt"><strong>Rôle :</strong> Conduite d'ensemble, archivage des historiques et gestion de production.</p>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 9 (DIAPO 6) -->
+    <section class="slide " id="slide-9" data-slide-index="9" data-section="3. PROFIBUS">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPO 6</div>
+          <span class="section-tag">3. PROFIBUS</span>
+          <h2 class="slide-title">DIAPO 6 : PROFIBUS : une famille de réseaux industriels</h2>
+          <div class="slide-subtitle">Définition, historique et signature visuelle des câbles DP et PA</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">DIAPO 6</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="split-layout">
+          <!-- Col Gauche : Captures en grand -->
+          <div class="col" style="flex: 1.15; align-items: center;">
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image17.jpeg', 'Schéma arborescent des réseaux : Controller Network, Field Network, Motion Network, Sensor/Actuator Network')">
+              <img src="assets/image17.jpeg" class="hero-capture-img" alt="Schéma des réseaux industriels">
+            </div>
+            <div class="caption">Architecture : Controller Network, Field Network, Motion Network</div>
+
+            <div class="zoomable-img-wrap" style="margin-top: 14px;" onclick="openLightbox('assets/image18.png', 'Couronnes de câbles normalisées : PROFIBUS-DP VIOLET (RS-485) et PROFIBUS-PA BLEU (MBP)')">
+              <img src="assets/image18.png" style="max-height: 190px; width: auto; object-fit: contain;" alt="Câble DP violet et PA bleu">
+            </div>
+            <div class="caption">Code couleur normalisé : <strong>VIOLET</strong> pour DP (RS-485) · <strong>BLEU</strong> pour PA (MBP)</div>
+          </div>
+
+          <!-- Col Droite : Définition & Frise historique -->
+          <div class="col" style="flex: 1.05;">
+            <div class="card detail-card">
+              <h3 class="section-heading purple-text" style="font-size: 30px;">1. Qu'est-ce que PROFIBUS ?</h3>
+              <p style="font-size: 28px; line-height: 1.45;">
+                <strong>PROFIBUS</strong> (<em>Process Field Bus</em>) est un réseau de communication industriel permettant de relier les automates, les systèmes de contrôle et les équipements de terrain afin d'échanger des données numériques.
+              </p>
+            </div>
+
+            <div class="card detail-card" style="margin-top: 15px;">
+              <h3 class="section-heading" style="font-size: 30px;">2. Un peu d'histoire :</h3>
+              <div class="timeline-container">
+                <div class="timeline-step">
+                  <div class="timeline-year">1987</div>
+                  <div class="timeline-content">Lancement de l'initiative PROFIBUS en Allemagne avec des industriels et instituts.</div>
+                </div>
+                <div class="timeline-step">
+                  <div class="timeline-year">1990–93</div>
+                  <div class="timeline-content">Développement et normalisation de <strong>PROFIBUS DP</strong> pour les échanges rapides d'E/S.</div>
+                </div>
+                <div class="timeline-step">
+                  <div class="timeline-year">Années 90</div>
+                  <div class="timeline-content">Développement de <strong>PROFIBUS PA</strong> pour répondre aux besoins de l'automatisation des procédés.</div>
+                </div>
+                <div class="timeline-step">
+                  <div class="timeline-year">Aujourd'hui</div>
+                  <div class="timeline-content">PROFIBUS reste massivement présent dans les usines de production mondiales.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 10 (DIAPOSITIVE 7) -->
+    <section class="slide " id="slide-10" data-slide-index="10" data-section="3. PROFIBUS">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPOSITIVE 7</div>
+          <span class="section-tag">3. PROFIBUS</span>
+          <h2 class="slide-title">Diapositive 7 — PROFIBUS DP vs PROFIBUS PA : différences</h2>
+          <div class="slide-subtitle">Deux variantes, deux besoins industriels fondamentaux</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">Diapositive 7</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="split-layout">
+          <!-- Col Gauche : PROFIBUS DP -->
+          <div class="col card dp-box" style="flex: 1;">
+            <div class="choice-badge badge-dp" style="font-size: 20px;">PROFIBUS DP</div>
+            <h3 class="choice-title purple-text" style="font-size: 30px;">Automatisation rapide</h3>
+            
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image19.jpeg', 'Connecteurs métalliques PROFIBUS DP sur câble violet')">
+              <img src="assets/image19.jpeg" class="dp-pa-thumb" alt="Connecteurs PROFIBUS DP">
+            </div>
+
+            <ul class="bullet-list-lg" style="margin-top: 14px;">
+              <li>Communication <strong>RS-485</strong> (différence de tension).</li>
+              <li>Vitesse très élevée : <strong>9,6 kbit/s jusqu'à 12 Mbit/s</strong>.</li>
+              <li>Câble blindé à deux conducteurs (A vert, B rouge).</li>
+              <li>Alimentation des appareils <strong>séparée</strong> (24V externe).</li>
+              <li>Réseau généralement en <strong>ligne (bus pur)</strong>.</li>
+            </ul>
+          </div>
+
+          <!-- Col Droite : PROFIBUS PA -->
+          <div class="col card pa-box" style="flex: 1.25;">
+            <div class="choice-badge badge-pa" style="font-size: 20px;">PROFIBUS PA</div>
+            <h3 class="choice-title blue-text" style="font-size: 30px;">Automatisation des procédés</h3>
+            
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image20.jpeg', 'Topologie PROFIBUS PA : Trunk (A), Coupleur DP/PA (B), Boîtiers Splitters (C), Signal MBP (D), Dérivations Spurs (E), Câble DP (F)')">
+              <img src="assets/image20.jpeg" class="dp-pa-thumb" style="max-height: 230px;" alt="Topologie PROFIBUS PA Trunk Spurs">
+            </div>
+
+            <ul class="bullet-list-lg" style="margin-top: 14px;">
+              <li>Communication <strong>MBP</strong> (Manchester Bus Powered).</li>
+              <li>Vitesse fixe et déterministe : <strong>31,25 kbit/s</strong>.</li>
+              <li>Câble blindé à deux conducteurs (bleu ou noir).</li>
+              <li><strong>Données et alimentation sur le même câble !</strong></li>
+              <li>Architecture en <strong>ligne (Trunk), arbre ou dérivations (Spurs)</strong>.</li>
+            </ul>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 11 (DIAPOSITIVE 7 (SUITE)) -->
+    <section class="slide " id="slide-11" data-slide-index="11" data-section="3. PROFIBUS">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPOSITIVE 7 (SUITE)</div>
+          <span class="section-tag">3. PROFIBUS</span>
+          <h2 class="slide-title">RS-485 vs MBP : Principes électriques & Analogies</h2>
+          <div class="slide-subtitle">1. La grande différence en une seule idée · 2. Le fonctionnement électrique détaillé</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">Physique des Signaux</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="split-layout">
+          <!-- Col Gauche : Les Analogies -->
+          <div class="col" style="flex: 1.05;">
+            <div class="card analogy-card">
+              <div class="analogy-head">
+                <span class="analogy-icon">📞</span>
+                <span class="analogy-title" style="font-size: 28px;">RS-485 : Comme une ligne téléphonique</span>
+              </div>
+              <p style="font-size: 26px; line-height: 1.45;">
+                Le câble sert uniquement à envoyer des informations (des signaux de tension). C'est comme une ligne téléphonique : les fils transportent la voix, mais ton téléphone doit être branché sur une prise murale pour s'allumer.
+              </p>
+              <div class="consequence-pill red-consequence" style="font-size: 23px;">➔ Alimentation 24V séparée obligatoire avec ses propres fils électriques !</div>
+            </div>
+
+            <div class="card analogy-card" style="margin-top: 15px;">
+              <div class="analogy-head">
+                <span class="analogy-icon">🔌</span>
+                <span class="analogy-title" style="font-size: 28px;">MBP : Comme un câble USB</span>
+              </div>
+              <p style="font-size: 26px; line-height: 1.45;">
+                Le câble alimente le capteur <strong>EN MÊME TEMPS</strong> qu'il transporte les données. C'est comme un câble USB : il alimente ton téléphone tout en transférant tes photos vers l'ordinateur.
+              </p>
+              <div class="consequence-pill green-consequence" style="font-size: 23px;">➔ Deux fils au total pour alimenter et faire dialoguer le capteur !</div>
+            </div>
+          </div>
+
+          <!-- Col Droite : Fonctionnement électrique -->
+          <div class="col" style="flex: 1.15;">
+            <div class="card detail-card">
+              <h3 class="section-heading" style="font-size: 28px;">A. Le RS-485 (Transmission par différence de tension)</h3>
+              <p style="font-size: 26px; line-height: 1.45;">
+                <strong>Le principe :</strong> On applique une différence de tension entre les fils <strong>A (vert)</strong> et <strong>B (rouge)</strong>.<br>
+                • Tension fil B &gt; tension fil A ➔ <strong>1 numérique</strong>.<br>
+                • Tension fil A &gt; tension fil B ➔ <strong>0 numérique</strong>.<br>
+                <strong>Conséquence :</strong> Aucun courant de puissance ne traverse ces fils de données.
+              </p>
+            </div>
+
+            <div class="card detail-card" style="margin-top: 15px;">
+              <h3 class="section-heading blue-text" style="font-size: 28px;">B. Le MBP — Manchester Bus Powered (Modulation de courant)</h3>
+              <p style="font-size: 26px; line-height: 1.45;">
+                <strong>Le principe :</strong> Le coupleur injecte une tension continue fixe (24V DC) qui alimente les capteurs.<br>
+                Pour envoyer un message, l'électronique fait varier le courant de <strong>±9 mA</strong> autour d'un courant de base à vitesse constante (31,25 kbit/s).<br>
+                <strong>Codage Manchester :</strong> transition bas vers haut = <strong>"0"</strong> ; haut vers bas = <strong>"1"</strong>.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 12 (DIAPOSITIVE 7 (EXEMPLES)) -->
+    <section class="slide " id="slide-12" data-slide-index="12" data-section="3. PROFIBUS">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPOSITIVE 7 (EXEMPLES)</div>
+          <span class="section-tag">3. PROFIBUS</span>
+          <h2 class="slide-title">Quand utiliser lequel ? (Exemples concrets)</h2>
+          <div class="slide-subtitle">Exemples d'application dans l'industrie : Siemens S7-300 vs Procédés chimiques</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">Applications</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="split-layout">
+          <!-- Exemple DP -->
+          <div class="col card choice-card" style="flex: 1; border-top: 6px solid #7E22CE;">
+            <div class="choice-badge badge-dp" style="font-size: 20px;">CHOISIR PROFIBUS DP</div>
+            <h3 class="choice-title purple-text" style="font-size: 30px;">Automatisation d'Atelier &amp; E/S Déportées</h3>
+            <p style="font-size: 26px; line-height: 1.45; margin-bottom: 12px;">
+              <strong>Exemple concret :</strong> relier un automate <strong>Siemens S7-300</strong> à des modules d'entrées/sorties <strong>ET 200</strong>, des variateurs de vitesse ou d'autres équipements nécessitant des <strong>échanges rapides</strong>.
+            </p>
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image21.jpeg', 'Exemple PROFIBUS DP : Automate Siemens CPU315-2 DP relié par câble violet à des modules d\'entrées-sorties déportées ET200')">
+              <img src="assets/image21.jpeg" class="case-study-img" alt="Siemens S7-300 et modules ET200 en PROFIBUS DP">
+            </div>
+            <div class="caption">CPU 315-2 DP reliée aux îlots d'E/S par câble violet PROFIBUS DP</div>
+          </div>
+
+          <!-- Exemple PA -->
+          <div class="col card choice-card" style="flex: 1; border-top: 6px solid #0284C7;">
+            <div class="choice-badge badge-pa" style="font-size: 20px;">CHOISIR PROFIBUS PA</div>
+            <h3 class="choice-title blue-text" style="font-size: 30px;">Procédés Continus &amp; Zone Dangereuse</h3>
+            <p style="font-size: 26px; line-height: 1.45; margin-bottom: 12px;">
+              <strong>Exemple concret :</strong> relier des transmetteurs de pression, de température, de débit et des positionneurs de vannes dans une <strong>installation pétrolière ou chimique (zones explosives)</strong>.
+            </p>
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image22.jpeg', 'Exemple PROFIBUS PA : Transmetteur de pression Rosemount avec manifold pour atmosphère sévère')">
+              <img src="assets/image22.jpeg" class="case-study-img" alt="Transmetteur de pression Rosemount pour zone sévère">
+            </div>
+            <div class="caption">Transmetteur Rosemount pour zone ATEX : télé-alimenté par le bus 2 fils</div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 13 (DIAPOSITIVE 8) -->
+    <section class="slide " id="slide-13" data-slide-index="13" data-section="3. PROFIBUS">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPOSITIVE 8</div>
+          <span class="section-tag">3. PROFIBUS</span>
+          <h2 class="slide-title">Diapositive 8 — Câblage, connecteurs et architecture physique</h2>
+          <div class="slide-subtitle">A. PROFIBUS DP : câble et connecteur DB9</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">Diapositive 8</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="split-layout">
+          <!-- Col Gauche : Texte & Spécifications -->
+          <div class="col" style="flex: 1.05;">
+            <div class="card detail-card">
+              <h3 class="section-heading purple-text" style="font-size: 30px;">Le câble PROFIBUS DP :</h3>
+              <ul class="bullet-list-lg">
+                <li>Deux conducteurs de transmission : <strong>A et B</strong>.</li>
+                <li><strong class="green-text">Fil A :</strong> généralement vert.</li>
+                <li><strong class="red-text">Fil B :</strong> généralement rouge.</li>
+                <li><strong>Blindage métallique</strong> pour protéger contre les perturbations électromagnétiques (CEM).</li>
+              </ul>
+            </div>
+
+            <div class="card alert-card" style="margin-top: 15px;">
+              <div class="alert-header">
+                <span class="alert-icon">⚠️</span>
+                <span class="alert-title" style="font-size: 28px;">Attention à une confusion importante :</span>
+              </div>
+              <p style="font-size: 26px; line-height: 1.45;">
+                Le connecteur possède <strong>9 broches physiques</strong>, mais cela ne signifie pas que le câble contient 9 fils !<br><br>
+                Pour la transmission des données, les deux broches principales sont <strong>3 et 8</strong>. Les broches <strong>5 et 6</strong> servent au circuit de terminaison actif.
+              </p>
+            </div>
+          </div>
+
+          <!-- Col Droite : Les photos en GRAND format cliquable -->
+          <div class="col" style="flex: 1.25;">
+            <div class="connectors-big-grid">
+              <div class="zoomable-img-wrap" onclick="openLightbox('assets/image23.jpeg', 'Câble violet PROFIBUS DP équipé de deux connecteurs DB9 métalliques coudés')">
+                <img src="assets/image23.jpeg" class="connector-quad-img" alt="Câble DP et connecteurs DB9">
+              </div>
+              <div class="zoomable-img-wrap" onclick="openLightbox('assets/image25.jpeg', 'Intérieur du connecteur FastConnect Siemens : bornier A1 B1 (vert/rouge) et levier rouge de terminaison active')">
+                <img src="assets/image25.jpeg" class="connector-quad-img" alt="Intérieur du connecteur DB9 Siemens">
+              </div>
+              <div class="zoomable-img-wrap" onclick="openLightbox('assets/image26.jpeg', 'Connecteur PROFIBUS DB9 avec repères A1 B1 A2 B2 et voyants de contrôle')">
+                <img src="assets/image26.jpeg" class="connector-quad-img" alt="Connecteur DB9 avec repères A1 B1">
+              </div>
+              <div class="zoomable-img-wrap" onclick="openLightbox('assets/image27.png', 'Les différents types de connecteurs DP : coudé à 90°, coudé à 35°, avec prise PG pour console, connecteur M12 étanche')">
+                <img src="assets/image27.png" class="connector-quad-img" alt="Types de connecteurs DP : 90°, 35°, PG, M12">
+              </div>
+            </div>
+            <div class="caption">Différents types de connecteurs DP : 90°, 35°, prise PG et M12 étanche (Cliquez pour agrandir)</div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 14 (DIAPO 9) -->
+    <section class="slide " id="slide-14" data-slide-index="14" data-section="3. PROFIBUS">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPO 9</div>
+          <span class="section-tag">3. PROFIBUS</span>
+          <h2 class="slide-title">Diapo 9 — Pourquoi 9 broches pour seulement 2 fils ?</h2>
+          <div class="slide-subtitle">Brochage DB9, terminaison de bus et interrupteur ON / OFF</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">DIAPO 9</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="split-layout">
+          <!-- Col Gauche : Captures en GRAND -->
+          <div class="col" style="flex: 1.25; align-items: center;">
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image28.jpeg', 'Tableau officiel de brochage DB9 PROFIBUS : Pin 1 Shield, Pin 3 B-line (rouge), Pin 4 RTS, Pin 5 DGND (0V), Pin 6 VP (+5V), Pin 8 A-line (vert)')">
+              <img src="assets/image28.jpeg" style="max-height: 260px; width: auto; object-fit: contain;" alt="Tableau de brochage DB9 PROFIBUS DP">
+            </div>
+            <div class="caption">Tableau officiel : Pin 3 = B (rouge), Pin 8 = A (vert), Pin 5 = DGND (0V), Pin 6 = VP (+5V)</div>
+
+            <div class="zoomable-img-wrap" style="margin-top: 12px;" onclick="openLightbox('assets/image29.png', 'Règle des interrupteurs de terminaison active : PLC S7-400 (ON aux extrémités), PLC S7-300 (OFF au milieu), ET 200S (OFF au milieu), Coupleur DP/PA (ON aux extrémités)')">
+              <img src="assets/image29.png" style="max-height: 180px; width: auto; object-fit: contain;" alt="Interrupteurs ON OFF le long du bus">
+            </div>
+            <div class="caption">Règle d'or : interrupteur sur <strong>ON</strong> aux 2 extrémités, <strong>OFF</strong> au milieu !</div>
+          </div>
+
+          <!-- Col Droite : Explications techniques -->
+          <div class="col" style="flex: 1;">
+            <div class="card detail-card">
+              <h3 class="section-heading purple-text" style="font-size: 30px;">Alors, pourquoi avoir neuf broches ?</h3>
+              <p style="font-size: 26px; line-height: 1.45;">
+                Le format DB9 est un standard mécanique. Les broches supplémentaires servent à alimenter le <strong>circuit de terminaison active de bus</strong> et sa polarisation :
+              </p>
+              <ul class="bullet-list-lg" style="margin-top: 10px;">
+                <li><strong>Broche 3 :</strong> Ligne B (données RS-485, fil rouge).</li>
+                <li><strong>Broche 8 :</strong> Ligne A (données RS-485, fil vert).</li>
+                <li><strong>Broche 6 :</strong> VP (+5V régulé délivré par l'automate).</li>
+                <li><strong>Broche 5 :</strong> DGND (Masse logique 0V).</li>
+              </ul>
+            </div>
+
+            <div class="card retenir-box" style="margin-top: 15px;">
+              <span class="retenir-tag">SCHÉMA ÉLECTRIQUE DE TERMINAISON</span>
+              <div class="zoomable-img-wrap" style="margin-top: 6px;" onclick="openLightbox('assets/image30.jpeg', 'Schéma électrique de la terminaison active : pont 390 Ohm pull-up au 5V (pin 6), 220 Ohm adaptation de ligne (pins 3-8), 390 Ohm pull-down au 0V (pin 5) avec interrupteur S1')">
+                <img src="assets/image30.jpeg" style="max-height: 120px; width: auto; object-fit: contain;" alt="Schéma électrique terminaison active 220 Ohm">
+              </div>
+              <p style="font-size: 23px; margin-top: 8px;">Le commutateur active le pont 390 Ω – 220 Ω – 390 Ω pour empêcher la réflexion d'onde en bout de câble.</p>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 15 (4-20 mA & AI) -->
+    <section class="slide " id="slide-15" data-slide-index="15" data-section="3. PROFIBUS">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">4-20 mA & AI</div>
+          <span class="section-tag">3. PROFIBUS</span>
+          <h2 class="slide-title">4–20 mA, modules AI, câbles et connecteurs</h2>
+          <div class="slide-subtitle">La référence analogique historique face aux bus numériques de terrain</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">[À VÉRIFIER]</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="split-layout">
+          <!-- Col Gauche : Texte explicatif -->
+          <div class="col" style="flex: 1.1;">
+            <div class="academic-check-badge">CONTENU TECHNIQUE DU PLAN [À VÉRIFIER]</div>
+
+            <div class="card detail-card">
+              <h3 class="section-heading" style="font-size: 30px;">1. Le principe de la boucle de courant 4–20 mA :</h3>
+              <ul class="bullet-list-lg">
+                <li><strong>Le zéro vivant (Live Zero) :</strong>
+                  <br>• <strong class="green-text">4 mA</strong> = 0% de l'échelle (ex: cuve vide à 0 bar).
+                  <br>• <strong class="teal-text">20 mA</strong> = 100% de l'échelle (ex: cuve pleine à 10 bar).
+                  <br>• <strong class="red-text">0 mA</strong> = <em>Défaut immédiat !</em> (Fil coupé ou capteur déconnecté).
+                </li>
+                <li><strong>Immunité aux pertes en ligne :</strong> le courant reste rigoureusement identique quelle que soit la longueur du câble.</li>
+              </ul>
+            </div>
+
+            <div class="card detail-card" style="margin-top: 15px;">
+              <h3 class="section-heading" style="font-size: 30px;">2. Raccordement sur module AI &amp; Limites :</h3>
+              <p style="font-size: 26px; line-height: 1.45;">
+                Le module d'entrée analogique (ex: <em>Siemens ET 200S AI</em>) intègre une résistance de mesure (shunt interne de 250 Ω) qui convertit le courant 4–20 mA en tension 1–5 V.
+              </p>
+              <div class="limit-box red-consequence" style="margin-top: 10px; font-size: 25px;">
+                <strong>Limite majeure :</strong> 1 câble dédié par capteur (câblage lourd) et transport d'une seule valeur scalaire sans diagnostic distant.
+              </div>
+            </div>
+          </div>
+
+          <!-- Col Droite : Photos en GRAND cliquables -->
+          <div class="col" style="flex: 1.15; align-items: center;">
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image31.jpeg', 'Module compact Siemens ET 200S 16DI/16DO pour acquisition d\'entrées-sorties en armoire')">
+              <img src="assets/image31.jpeg" class="case-study-img" alt="Module Siemens ET 200S Compact">
+            </div>
+            <div class="caption">Module Siemens ET 200S : raccordement d'entrées/sorties d'automate</div>
+
+            <div class="zoomable-img-wrap" style="margin-top: 12px;" onclick="openLightbox('assets/image34.jpeg', 'Transmetteur de pression industriel Siemens SITRANS P avec tête de raccordement')">
+              <img src="assets/image34.jpeg" class="case-study-img" alt="Transmetteur Siemens SITRANS P">
+            </div>
+            <div class="caption">Transmetteur Siemens SITRANS P : instrument de mesure de procédé industriel</div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 16 (DIAPOSITIVE 10) -->
+    <section class="slide " id="slide-16" data-slide-index="16" data-section="3. PROFIBUS">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPOSITIVE 10</div>
+          <span class="section-tag">3. PROFIBUS</span>
+          <h2 class="slide-title">Diapositive 10 — Liaison entre PROFIBUS DP et PROFIBUS PA</h2>
+          <div class="slide-subtitle">Titre : Comment relier PROFIBUS DP à PROFIBUS PA ? (Architecture Trunk & Spurs)</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">Diapositive 10</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="split-layout">
+          <!-- Col Gauche : Grande capture d'architecture -->
+          <div class="col" style="flex: 1.35; align-items: center;">
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image35.jpeg', 'Architecture complète DP vers PA : Automate CLP Mestre -> Câble DP violet -> Coupleur Acoplador DP/PA -> Câble PA bleu Tronco -> Boîtes de jonction Caixas de Juncao -> Équipements de champ')">
+              <img src="assets/image35.jpeg" class="hero-capture-img" style="max-height: 400px;" alt="Architecture de liaison PROFIBUS DP vers PA">
+            </div>
+            <div class="caption">Chaîne complète : Automate Maître ➔ PROFIBUS DP ➔ Coupleur DP/PA ➔ Tronc PA ➔ Dérivations ➔ Transmetteurs</div>
+            
+            <div class="tip-box" style="margin-top: 12px; width: 100%; font-size: 25px;">
+              Totalement transparent pour le programme de l'automate : les instruments PA apparaissent comme des esclaves DP normaux dans la table d'adressage !
+            </div>
+          </div>
+
+          <!-- Col Droite : Matériel clé en grand format cliquable -->
+          <div class="col" style="flex: 0.95;">
+            <!-- Coupleur DP/PA -->
+            <div class="card detail-card">
+              <div class="duo-header blue-text" style="font-size: 26px;">1. Le Coupleur DP/PA (Passerelle)</div>
+              <div class="zoomable-img-wrap" onclick="openLightbox('assets/image33.jpeg', 'SIMATIC DP/PA Coupler Siemens : module passerelle de conversion RS-485 vers MBP et injection de puissance 24V')">
+                <img src="assets/image33.jpeg" style="max-height: 110px; width: auto; object-fit: contain;" alt="SIMATIC DP/PA Coupler">
+              </div>
+              <p style="font-size: 23px; line-height: 1.35; margin-top: 6px;">Adapte le débit (1,5 Mbaud ➔ 31,25 kbaud), convertit le signal RS-485 en MBP et injecte l'alimentation 24V sur le bus PA.</p>
+            </div>
+
+            <!-- Boîte de dérivation PA -->
+            <div class="card detail-card" style="margin-top: 12px;">
+              <div class="duo-header green-text" style="font-size: 26px;">2. Boîtier de dérivation PA</div>
+              <div class="zoomable-img-wrap" onclick="openLightbox('assets/image36.jpeg', 'Boîte de dérivation Pepperl+Fuchs FieldConnex F2-JB-8.CGB étanche IP67 pour bus de terrain')">
+                <img src="assets/image36.jpeg" style="max-height: 100px; width: auto; object-fit: contain;" alt="Boîte Pepperl+Fuchs FieldConnex">
+              </div>
+              <div class="zoomable-img-wrap" style="margin-top: 6px;" onclick="openLightbox('assets/image37.png', 'Boîtier de dérivation PA avec dérivations Spurs vers : Spur 1 Pression, Spur 2 Température, Spur 3 Débit')">
+                <img src="assets/image37.png" style="max-height: 80px; width: auto; object-fit: contain;" alt="Dérivations Spurs PA Pression Température Débit">
+              </div>
+              <p style="font-size: 23px; line-height: 1.35; margin-top: 6px;">Distribue le câble principal (<strong>Trunk</strong>) vers des dérivations courtes (<strong>Spurs</strong>) pour chaque instrument.</p>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 17 (DIAPO 11) -->
+    <section class="slide " id="slide-17" data-slide-index="17" data-section="4. ETHERNET & PROFINET">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPO 11</div>
+          <span class="section-tag">4. ETHERNET & PROFINET</span>
+          <h2 class="slide-title">Diapo 11 : Ethernet — La base des réseaux modernes</h2>
+          <div class="slide-subtitle">La technologie universelle reliant ordinateurs, automates, pupitres et variateurs</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">DIAPO 11</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="split-layout">
+          <!-- Col Gauche : Texte & Analogie du document -->
+          <div class="col" style="flex: 1.15;">
+            <div class="card detail-card">
+              <h3 class="section-heading" style="font-size: 30px;">Ethernet : Une technologie de réseau local</h3>
+              <p style="font-size: 26px; line-height: 1.45; margin-bottom: 12px;">
+                Ethernet permet de connecter plusieurs appareils dans un réseau local et de faire circuler des données numériques entre eux.
+              </p>
+            </div>
+
+            <div class="card analogy-card" style="margin-top: 15px;">
+              <div class="analogy-head">
+                <span class="analogy-icon">💻</span>
+                <span class="analogy-title" style="font-size: 28px;">L'analogie des trois ordinateurs et du switch</span>
+              </div>
+              <p style="font-size: 26px; line-height: 1.45;">
+                Imagine que tu as <strong>trois ordinateurs dans une salle</strong>. Tu les relies à un équipement appelé <strong>switch</strong> avec des câbles Ethernet. Ils peuvent alors échanger des informations librement.
+              </p>
+            </div>
+
+            <div class="card detail-card" style="margin-top: 15px;">
+              <h4 class="card-title" style="font-size: 28px;">En industrie, le principe est similaire :</h4>
+              <p style="font-size: 26px; line-height: 1.45;">
+                • PLC Siemens · HMI · Ordinateur SCADA · Variateur · Modules d'E/S.<br>
+                Ils sont reliés à travers un <strong>réseau Ethernet industriel</strong> via des commutateurs (switches).
+              </p>
+            </div>
+          </div>
+
+          <!-- Col Droite : Captures en grand cliquables -->
+          <div class="col" style="flex: 1.15; align-items: center;">
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image39.jpeg', 'Pince à sertir, connecteur RJ45 et repérage couleur des 8 conducteurs Ethernet T568B')">
+              <img src="assets/image39.jpeg" class="case-study-img" alt="Sertissage câble RJ45 et 8 fils">
+            </div>
+            <div class="caption">Sertissage d'un connecteur RJ45 et repérage normalisé des 8 fils</div>
+
+            <div class="zoomable-img-wrap" style="margin-top: 12px;" onclick="openLightbox('assets/image40.jpeg', 'Commutateur réseau (Switch) en baie de brassage avec câbles Ethernet jaunes')">
+              <img src="assets/image40.jpeg" class="case-study-img" alt="Switch réseau Ethernet avec cordons jaunes">
+            </div>
+            <div class="caption">Commutateur réseau (Switch) assurant l'aiguillage des trames Ethernet</div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 18 (DIAPO 12) -->
+    <section class="slide " id="slide-18" data-slide-index="18" data-section="4. ETHERNET & PROFINET">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPO 12</div>
+          <span class="section-tag">4. ETHERNET & PROFINET</span>
+          <h2 class="slide-title">Diapo 12 : Qu'est-ce que PROFINET ?</h2>
+          <div class="slide-subtitle">Process Field Network : La relation essentielle entre Ethernet et PROFINET</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">DIAPO 12</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="split-layout">
+          <!-- Col Gauche : Texte & Retenons ceci -->
+          <div class="col" style="flex: 1.15;">
+            <div class="card def-box">
+              <h3 class="def-title green-text" style="font-size: 32px;">Qu'est-ce que PROFINET ?</h3>
+              <p class="lead-text" style="font-size: 30px;">
+                <strong>PROFINET</strong> signifie <em>Process Field Network</em>.
+              </p>
+              <p style="font-size: 28px; line-height: 1.45; margin-top: 12px;">
+                C'est une technologie de communication industrielle développée pour permettre aux équipements d'automatisation de communiquer à travers Ethernet.
+              </p>
+            </div>
+
+            <div class="card retenir-box" style="margin-top: 25px;">
+              <span class="retenir-tag" style="font-size: 20px;">ALORS, QUELLE EST LA RELATION ENTRE LES DEUX ?</span>
+              <p style="font-size: 30px; font-weight: bold; color: var(--primary-navy); margin-top: 12px; line-height: 1.4;">
+                Retenons ceci :
+              </p>
+              <div class="big-comparison-banner" style="margin-top: 14px;">
+                <div class="banner-point" style="font-size: 28px; line-height: 1.4;">
+                  <span class="banner-icon">🌐</span>
+                  <span><strong>Ethernet</strong> fournit la base physique du réseau.</span>
+                </div>
+                <div class="banner-point" style="font-size: 28px; line-height: 1.4; margin-top: 14px;">
+                  <span class="banner-icon">⚡</span>
+                  <span><strong>PROFINET</strong> fournit les mécanismes de communication industrielle entre les équipements.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Col Droite : Capture SCALANCE en GRAND cliquable -->
+          <div class="col" style="flex: 1.15; align-items: center;">
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image41.jpeg', 'Switch industriel Siemens SCALANCE X224 avec câbles verts PROFINET blindés')">
+              <img src="assets/image41.jpeg" class="large-hero-img" alt="Switch Siemens SCALANCE X224 avec câbles verts PROFINET">
+            </div>
+            <div class="caption">Switch industriel Siemens SCALANCE X224 avec ses câbles verts PROFINET blindés</div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 19 (DIAPOSITIVE SUIVANT) -->
+    <section class="slide " id="slide-19" data-slide-index="19" data-section="4. ETHERNET & PROFINET">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPOSITIVE SUIVANT</div>
+          <span class="section-tag">4. ETHERNET & PROFINET</span>
+          <h2 class="slide-title">Diapositive suivant — Ethernet : la base de PROFINET</h2>
+          <div class="slide-subtitle">Titre : Comprendre Ethernet avant de comprendre PROFINET</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">Infrastructure</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="split-layout">
+          <!-- Col Gauche : Texte du document -->
+          <div class="col" style="flex: 1.15;">
+            <div class="card detail-card">
+              <h3 class="section-heading" style="font-size: 30px;">1. Qu'est-ce qu'Ethernet ?</h3>
+              <p style="font-size: 26px; line-height: 1.45;">
+                Technologie utilisée pour connecter plusieurs équipements dans un réseau local (LAN) et leur permettre d'échanger des données. Il définit notamment :
+              </p>
+              <ul class="bullet-list-lg" style="margin-top: 8px;">
+                <li>La transmission des données sur le réseau physique.</li>
+                <li>Le format normalisé des <strong>trames Ethernet</strong>.</li>
+                <li>L'utilisation des <strong>adresses MAC</strong> matérielles.</li>
+                <li>La communication entre les équipements via des <strong>switches</strong>.</li>
+              </ul>
+            </div>
+
+            <div class="card detail-card" style="margin-top: 15px;">
+              <h3 class="section-heading" style="font-size: 30px;">3. De quoi est composé un câble Ethernet ?</h3>
+              <p style="font-size: 26px; line-height: 1.45;">
+                Un câble cuivre classique comporte :<br>
+                • <strong>8 conducteurs</strong> isolés individuellement.<br>
+                • <strong>4 paires torsadées</strong> (Twisted Pairs).<br>
+                • Une gaine extérieure de protection (PVC Jacket).<br>
+                <strong>La torsion des paires</strong> réduit considérablement les perturbations électromagnétiques (effet diaphonique).
+              </p>
+            </div>
+          </div>
+
+          <!-- Col Droite : Captures en grand format cliquable -->
+          <div class="col" style="flex: 1.15; align-items: center;">
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image43.jpeg', 'Détail de la constitution d\'un câble Ethernet cuivre : 4 paires torsadées (Twisted Pair), âmes en cuivre OFC, fil de déchirement (Ripcord), gaine de protection PVC')">
+              <img src="assets/image43.jpeg" class="case-study-img" style="max-height: 250px;" alt="Constitution câble Ethernet 4 paires torsadées">
+            </div>
+            <div class="caption">Anatomie du câble : 4 paires torsadées réduisant les parasites électromagnétiques</div>
+
+            <div class="zoomable-img-wrap" style="margin-top: 12px;" onclick="openLightbox('assets/image42.jpeg', 'Commutateur réseau haute densité avec cordons Ethernet multicolores')">
+              <img src="assets/image42.jpeg" class="case-study-img" style="max-height: 180px;" alt="Brassage réseau switch Ethernet">
+            </div>
+            <div class="caption">Commutateurs (Switches) Ethernet : interconnexion des nœuds du réseau</div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 20 (DIAPOSITIVE SUIVANT) -->
+    <section class="slide " id="slide-20" data-slide-index="20" data-section="4. ETHERNET & PROFINET">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPOSITIVE SUIVANT</div>
+          <span class="section-tag">4. ETHERNET & PROFINET</span>
+          <h2 class="slide-title">Diapositive suivant — PROFINET : Ethernet adapté à l'industrie</h2>
+          <div class="slide-subtitle">Titre : PROFINET, le réseau Ethernet industriel</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">PROFINET RT</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="split-layout">
+          <!-- Col Gauche : Texte & Caractéristiques -->
+          <div class="col" style="flex: 1.2;">
+            <div class="card def-box">
+              <h3 class="def-title green-text" style="font-size: 30px;">Qu'est-ce que PROFINET ?</h3>
+              <p class="lead-text" style="font-size: 28px;">
+                <strong>PROFINET</strong> (<em>Process Field Network</em>) est un standard de communication industrielle basé sur Ethernet. Il permet aux automates, aux équipements de terrain et aux systèmes de supervision d'échanger des informations.
+              </p>
+            </div>
+
+            <div class="card detail-card" style="margin-top: 15px;">
+              <h3 class="section-heading" style="font-size: 30px;">Ses principales caractéristiques :</h3>
+              <ul class="bullet-list-lg">
+                <li><strong>Communication basée sur Ethernet :</strong> câbles et switchs standardisés.</li>
+                <li><strong>Échanges rapides et déterministes grâce à PROFINET RT :</strong> cycle &lt; 1 ms.</li>
+                <li><strong>Utilisation de switches Ethernet industriels :</strong> topologies en étoile ou anneau (MRP).</li>
+                <li><strong>Possibilité de connecter de nombreux équipements :</strong> modularité élevée.</li>
+                <li><strong>Temps réel et TCP/IP sur le même réseau :</strong> les E/S critiques et les pages web de diagnostic circulent ensemble sans blocage.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Col Droite : Photo SCALANCE PROFINET en GRAND -->
+          <div class="col" style="flex: 1.05; align-items: center;">
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image41.jpeg', 'Switch Siemens SCALANCE X224 avec cordons verts PROFINET dédiés aux automates industriels')">
+              <img src="assets/image41.jpeg" class="large-hero-img" alt="Switch industriel Siemens SCALANCE PROFINET">
+            </div>
+            <div class="caption">Switch administrable Siemens SCALANCE X224 avec cordons verts PROFINET blindés</div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 21 (DIAPO SUIVANT) -->
+    <section class="slide " id="slide-21" data-slide-index="21" data-section="4. ETHERNET & PROFINET">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPO SUIVANT</div>
+          <span class="section-tag">4. ETHERNET & PROFINET</span>
+          <h2 class="slide-title">DIAPO SUIVANT : Identification des équipements</h2>
+          <div class="slide-subtitle">2. Comment les équipements sont-ils identifiés ? (MAC, IP, Nom PROFINET) [À VÉRIFIER]</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">DIAPO SUIVANT</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="split-layout">
+          <!-- Col Gauche : Capture réseau d'usines en GRAND -->
+          <div class="col" style="flex: 1.35; align-items: center;">
+            <div class="academic-check-badge">SYNTHÈSE TECHNIQUE D'ADRESSAGE [À VÉRIFIER]</div>
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image44.jpeg', 'Architecture réseau PROFINET industrielle reliant Factory A, Factory B, Factory C avec anneau fibre optique 1000 Mbps, switches, automates PLC, robots, moteurs, pupitre HMI et centre de contrôle')">
+              <img src="assets/image44.jpeg" class="hero-capture-img" style="max-height: 410px;" alt="Architecture réseau PROFINET reliant usines A B C">
+            </div>
+            <div class="caption">Réseau PROFINET interconnectant usines A, B, C via un anneau de communication redondant</div>
+          </div>
+
+          <!-- Col Droite : Les 3 identifiants -->
+          <div class="col" style="flex: 0.95;">
+            <div class="card id-step-card">
+              <div class="id-tag green-tag" style="font-size: 20px;">1. LE NOM PROFINET (Device Name)</div>
+              <p style="font-size: 25px; line-height: 1.35; margin-top: 4px;">Ex : <code class="code-badge">convoyeur-station-1</code>. Attribué dans TIA Portal par l'automaticien. C'est la <strong>clé principale</strong> de reconnaissance dans l'atelier.</p>
+            </div>
+
+            <div class="card id-step-card" style="margin-top: 10px;">
+              <div class="id-tag gray-tag" style="font-size: 20px;">2. L'ADRESSE MAC (Couche 2 Physique)</div>
+              <p style="font-size: 25px; line-height: 1.35; margin-top: 4px;">Ex : <code class="code-badge">00:1B:1B:4F:92:01</code>. Identifiant matériel mondial unique gravé en usine. Découvert via le protocole <strong>DCP</strong>.</p>
+            </div>
+
+            <div class="card id-step-card" style="margin-top: 10px;">
+              <div class="id-tag blue-tag" style="font-size: 20px;">3. L'ADRESSE IP (Couche 3 Réseau)</div>
+              <p style="font-size: 25px; line-height: 1.35; margin-top: 4px;">Ex : <code class="code-badge">192.168.0.10</code>. Indispensable pour la supervision SCADA. Attribuée automatiquement par le contrôleur au démarrage !</p>
+            </div>
+
+            <div class="zoomable-img-wrap" style="margin-top: 10px; width: 100%; text-align: center;" onclick="openLightbox('assets/image45.jpeg', 'Connecteur industriel étanche M12 en T pour réseau de terrain')">
+              <img src="assets/image45.jpeg" style="max-height: 95px; width: auto; object-fit: contain;" alt="Connecteur M12 en T">
+            </div>
+            <div class="caption">Connecteur industriel étanche M12 en T</div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+    <!-- Slide 22 (DIAPOSITIVE FINALE) -->
+    <section class="slide " id="slide-22" data-slide-index="22" data-section="5. CONCLUSION">
+      <div class="slide-header">
+        <div class="header-left">
+          <div class="doc-badge-pill">DIAPOSITIVE FINALE</div>
+          <span class="section-tag">5. CONCLUSION</span>
+          <h2 class="slide-title">Diapositive finale — Conclusion générale</h2>
+          <div class="slide-subtitle">Titre : Conclusion : vers une communication industrielle intégrée</div>
+        </div>
+        <div class="header-right">
+          <span class="badge-pill">Conclusion</span>
+        </div>
+      </div>
+      <div class="slide-body">
+        
+        <div class="split-layout">
+          <!-- Col Gauche : Texte de synthèse du document -->
+          <div class="col" style="flex: 1.15;">
+            <div class="card detail-card">
+              <p class="lead-text" style="font-size: 28px; line-height: 1.45;">
+                Les réseaux industriels constituent un <strong>élément essentiel de l'automatisation moderne</strong>. Ils permettent de connecter les équipements, de transmettre les informations et d'assurer la supervision des procédés industriels.
+              </p>
+            </div>
+
+            <div class="card detail-card" style="margin-top: 15px;">
+              <h3 class="section-heading" style="font-size: 30px;">À travers cette présentation, nous avons découvert :</h3>
+              <ul class="bullet-list-lg">
+                <li>Les différents <strong>types et niveaux</strong> des réseaux industriels (Pyramide CIM).</li>
+                <li>Les principaux <strong>protocoles de communication</strong> utilisés dans l'industrie.</li>
+                <li>Le fonctionnement de <strong>PROFIBUS DP et PA</strong>, ainsi que leur interconnexion via le coupleur.</li>
+                <li>L'évolution vers <strong>Ethernet industriel et PROFINET</strong>, plus rapides, déterministes et flexibles.</li>
+              </ul>
+            </div>
+
+            <div class="card curiosite-box" style="margin-top: 15px;">
+              <div class="curiosite-title" style="font-size: 26px;">💬 Séance de questions &amp; échanges</div>
+              <p style="font-size: 26px;">Merci pour votre attention active ! Je suis à votre disposition pour vos questions.</p>
+            </div>
+          </div>
+
+          <!-- Col Droite : Grande capture d'empilement global -->
+          <div class="col" style="flex: 1.15; align-items: center;">
+            <div class="zoomable-img-wrap" onclick="openLightbox('assets/image46.png', 'Schéma d\'intégration globale des réseaux industriels : Réseau informatique / Internet -> Ethernet industriel / PROFINET -> PROFIBUS DP (RS-485) -> PROFIBUS PA (MBP)')">
+              <img src="assets/image46.png" class="hero-capture-img" style="max-height: 410px;" alt="Schéma d'intégration des réseaux industriels">
+            </div>
+            <div class="caption">La vision intégrée : Internet / ERP ➔ PROFINET ➔ PROFIBUS DP ➔ PROFIBUS PA (Cliquez pour agrandir)</div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    
+      </main>
+
+      <!-- Stage Footer -->
+      <footer id="stage-footer">
+        <div class="footer-left" style="display: flex; align-items: center; gap: 10px;">
+          <img src="assets/logo_esg2e.png" alt="ESG2E" style="height: 28px; width: auto; object-fit: contain;">
+          <span>ESG2E Oran · Automatisme &amp; Informatique industrielle</span>
+        </div>
+        <div class="footer-center" style="font-size: 22px; display: flex; align-items: center; gap: 10px;">
+          <span style="font-weight: 600; color: #475569;">Présenté par :</span>
+          <span class="editable-name" contenteditable="true" spellcheck="false" title="Cliquez pour éditer votre nom">Ziouane Fethi</span>
+        </div>
+        <div class="footer-right">
+          <div class="screen-controls">
+            <button class="btn-nav" onclick="toggleOverview()" title="Vue d'ensemble en miniatures (Touche O)">⊞ Grille</button>
+            <button class="btn-nav" onclick="toggleNotes()" title="Notes du présentateur (Touche S)">📝 Notes</button>
+            <button class="btn-nav" onclick="toggleFullscreen()" title="Plein écran (Touche F)">⛶ Plein écran</button>
+            <button class="btn-nav" onclick="toggleHelp()" title="Raccourcis clavier (Touche H ou ?)">❓ Aide</button>
+          </div>
+          <div class="counter-badge">
+            <span id="current-slide-num">1</span> / <span id="total-slides-num">22</span>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  <!-- Full-Screen Lightbox Zoom Modal -->
+  <div class="lightbox-overlay" id="lightbox-modal" onclick="handleLightboxClick(event)">
+    <div class="lightbox-header">
+      <span class="lightbox-title" id="lightbox-caption">Légende de la capture</span>
+      <div class="lightbox-actions">
+        <button class="lightbox-btn" onclick="zoomLightbox(0.25)" title="Zoom avant (+)">🔍 +</button>
+        <button class="lightbox-btn" onclick="zoomLightbox(-0.25)" title="Zoom arrière (-)">🔍 -</button>
+        <button class="lightbox-btn" onclick="resetLightboxZoom()" title="Taille normale">100%</button>
+        <button class="lightbox-btn close-btn" onclick="closeLightbox()" title="Fermer (Échap)">✕</button>
+      </div>
+    </div>
+    <div class="lightbox-body">
+      <img id="lightbox-img" src="" alt="Capture agrandie">
+    </div>
+    <div class="lightbox-hint">Astuce : Cliquez à l'extérieur ou appuyez sur Échap pour fermer</div>
+  </div>
+
+  <!-- Overview Modal (O) -->
+  <div class="modal-overlay" id="overview-modal" onclick="handleOverlayClick(event, 'overview-modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Vue d'ensemble de la présentation (22 Diapositives)</h3>
+        <button class="modal-close-btn" onclick="toggleOverview()">&times;</button>
+      </div>
+      <div class="overview-grid">
+        
+    <div class="overview-card" onclick="goToSlide(1)">
+      <div class="ov-num">1</div>
+      <div class="ov-sec">COUVERTURE · INTRODUCTION</div>
+      <div class="ov-title">LES RÉSEAUX INDUSTRIELS</div>
+      <div class="ov-badge">ESG2E ORAN</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(2)">
+      <div class="ov-num">2</div>
+      <div class="ov-sec">PLAN · SOMMAIRE</div>
+      <div class="ov-title">Plan général de la présentation</div>
+      <div class="ov-badge">Sommaire</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(3)">
+      <div class="ov-num">3</div>
+      <div class="ov-sec">INTRODUCTION · INTRODUCTION</div>
+      <div class="ov-title">Remarque importante</div>
+      <div class="ov-badge">Démarche</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(4)">
+      <div class="ov-num">4</div>
+      <div class="ov-sec">DIAPOSITIVE 1 · 1. PROBLÉMATIQUE DU CÂBLAGE</div>
+      <div class="ov-title">Diapositive 1 — Pourquoi les réseaux industriels ?</div>
+      <div class="ov-badge">Diapositive 1</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(5)">
+      <div class="ov-num">5</div>
+      <div class="ov-sec">DIAPOSITIVE 2 · 1. PROBLÉMATIQUE DU CÂBLAGE</div>
+      <div class="ov-title">Diapositive 2 — L'évolution vers les réseaux industriels</div>
+      <div class="ov-badge">Diapositive 2</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(6)">
+      <div class="ov-num">6</div>
+      <div class="ov-sec">DIAPOSITIVE 3 · 2. CLASSIFICATIONS</div>
+      <div class="ov-title">Diapositive 3 — Classification selon le type de réseau</div>
+      <div class="ov-badge">Diapositive 3</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(7)">
+      <div class="ov-num">7</div>
+      <div class="ov-sec">DIAPOSITIVE 4 · 2. CLASSIFICATIONS</div>
+      <div class="ov-title">Diapositive 4 — Classification selon le niveau du réseau</div>
+      <div class="ov-badge">Diapositive 4</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(8)">
+      <div class="ov-num">8</div>
+      <div class="ov-sec">DIAPOSITIVE 5 · 2. CLASSIFICATIONS</div>
+      <div class="ov-title">Diapositive 5 — Les protocoles selon le niveau industriel</div>
+      <div class="ov-badge">Diapositive 5</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(9)">
+      <div class="ov-num">9</div>
+      <div class="ov-sec">DIAPO 6 · 3. PROFIBUS</div>
+      <div class="ov-title">DIAPO 6 : PROFIBUS : une famille de réseaux industriels</div>
+      <div class="ov-badge">DIAPO 6</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(10)">
+      <div class="ov-num">10</div>
+      <div class="ov-sec">DIAPOSITIVE 7 · 3. PROFIBUS</div>
+      <div class="ov-title">Diapositive 7 — PROFIBUS DP vs PROFIBUS PA : différences</div>
+      <div class="ov-badge">Diapositive 7</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(11)">
+      <div class="ov-num">11</div>
+      <div class="ov-sec">DIAPOSITIVE 7 (SUITE) · 3. PROFIBUS</div>
+      <div class="ov-title">RS-485 vs MBP : Principes électriques & Analogies</div>
+      <div class="ov-badge">Physique des Signaux</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(12)">
+      <div class="ov-num">12</div>
+      <div class="ov-sec">DIAPOSITIVE 7 (EXEMPLES) · 3. PROFIBUS</div>
+      <div class="ov-title">Quand utiliser lequel ? (Exemples concrets)</div>
+      <div class="ov-badge">Applications</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(13)">
+      <div class="ov-num">13</div>
+      <div class="ov-sec">DIAPOSITIVE 8 · 3. PROFIBUS</div>
+      <div class="ov-title">Diapositive 8 — Câblage, connecteurs et architecture physique</div>
+      <div class="ov-badge">Diapositive 8</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(14)">
+      <div class="ov-num">14</div>
+      <div class="ov-sec">DIAPO 9 · 3. PROFIBUS</div>
+      <div class="ov-title">Diapo 9 — Pourquoi 9 broches pour seulement 2 fils ?</div>
+      <div class="ov-badge">DIAPO 9</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(15)">
+      <div class="ov-num">15</div>
+      <div class="ov-sec">4-20 mA & AI · 3. PROFIBUS</div>
+      <div class="ov-title">4–20 mA, modules AI, câbles et connecteurs</div>
+      <div class="ov-badge">[À VÉRIFIER]</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(16)">
+      <div class="ov-num">16</div>
+      <div class="ov-sec">DIAPOSITIVE 10 · 3. PROFIBUS</div>
+      <div class="ov-title">Diapositive 10 — Liaison entre PROFIBUS DP et PROFIBUS PA</div>
+      <div class="ov-badge">Diapositive 10</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(17)">
+      <div class="ov-num">17</div>
+      <div class="ov-sec">DIAPO 11 · 4. ETHERNET & PROFINET</div>
+      <div class="ov-title">Diapo 11 : Ethernet — La base des réseaux modernes</div>
+      <div class="ov-badge">DIAPO 11</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(18)">
+      <div class="ov-num">18</div>
+      <div class="ov-sec">DIAPO 12 · 4. ETHERNET & PROFINET</div>
+      <div class="ov-title">Diapo 12 : Qu'est-ce que PROFINET ?</div>
+      <div class="ov-badge">DIAPO 12</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(19)">
+      <div class="ov-num">19</div>
+      <div class="ov-sec">DIAPOSITIVE SUIVANT · 4. ETHERNET & PROFINET</div>
+      <div class="ov-title">Diapositive suivant — Ethernet : la base de PROFINET</div>
+      <div class="ov-badge">Infrastructure</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(20)">
+      <div class="ov-num">20</div>
+      <div class="ov-sec">DIAPOSITIVE SUIVANT · 4. ETHERNET & PROFINET</div>
+      <div class="ov-title">Diapositive suivant — PROFINET : Ethernet adapté à l'industrie</div>
+      <div class="ov-badge">PROFINET RT</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(21)">
+      <div class="ov-num">21</div>
+      <div class="ov-sec">DIAPO SUIVANT · 4. ETHERNET & PROFINET</div>
+      <div class="ov-title">DIAPO SUIVANT : Identification des équipements</div>
+      <div class="ov-badge">DIAPO SUIVANT</div>
+    </div>
+    
+    <div class="overview-card" onclick="goToSlide(22)">
+      <div class="ov-num">22</div>
+      <div class="ov-sec">DIAPOSITIVE FINALE · 5. CONCLUSION</div>
+      <div class="ov-title">Diapositive finale — Conclusion générale</div>
+      <div class="ov-badge">Conclusion</div>
+    </div>
+    
+      </div>
+    </div>
+  </div>
+
+  <!-- Notes Modal (S) -->
+  <div class="modal-overlay" id="notes-modal" onclick="handleOverlayClick(event, 'notes-modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Notes de présentation (À dire à l'oral)</h3>
+        <button class="modal-close-btn" onclick="toggleNotes()">&times;</button>
+      </div>
+      <div class="notes-content-wrap">
+        <div class="notes-slide-title" id="notes-slide-title">Titre de la diapositive</div>
+        <div class="notes-body" id="notes-text">Notes orales du présentateur...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help Modal (H) -->
+  <div class="modal-overlay" id="help-modal" onclick="handleOverlayClick(event, 'help-modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Raccourcis clavier de la présentation</h3>
+        <button class="modal-close-btn" onclick="toggleHelp()">&times;</button>
+      </div>
+      <div class="notes-content-wrap">
+        <table class="help-table">
+          <tr><td>Flèche Droite (→), Espace, PgDown</td><td><strong>Avancer directement à la diapositive suivante (1 clic = 1 diapo)</strong></td></tr>
+          <tr><td>Flèche Gauche (←), PgUp</td><td><strong>Revenir directement à la diapositive précédente</strong></td></tr>
+          <tr><td>Clic sur n'importe quelle photo</td><td>Agrandir en plein écran (Lightbox)</td></tr>
+          <tr><td>Touche F</td><td>Basculer en mode Plein écran vidéoprojecteur (Data Show)</td></tr>
+          <tr><td>Touche O</td><td>Ouvrir la grille de miniatures (vue d'ensemble)</td></tr>
+          <tr><td>Touche S</td><td>Afficher les notes orales du présentateur</td></tr>
+          <tr><td>Touche Home / End</td><td>Aller à la première / dernière diapositive</td></tr>
+          <tr><td>Touche Échap (Esc)</td><td>Fermer l'image agrandie / les fenêtres modales</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       JAVASCRIPT CONTROLLER - 1 CLICK = 1 SLIDE (NO MULTI-CLICK BLOCKING)
+       ========================================================================== */
+    const TOTAL_SLIDES = 22;
+    let currentSlide = 1;
+    let currentZoom = 1;
+    const speakerNotes = {"1": {"title": "LES RÉSEAUX INDUSTRIELS", "notes": "Bonjour à toutes et à tous. Aujourd'hui, nous allons étudier l'architecture des réseaux industriels, depuis les liaisons élémentaires de terrain jusqu'aux réseaux Ethernet industriels."}, "2": {"title": "Plan général de la présentation", "notes": "Voici le plan de notre exposé. Nous partirons des limitations du câblage filaire, passerons par les bus de terrain de référence PROFIBUS DP et PA, avant de voir comment Ethernet et PROFINET unifient l'usine entière."}, "3": {"title": "Remarque importante", "notes": "Gardons à l'esprit cette citation d'ouverture : l'automatisme industriel est un univers très riche. L'essentiel aujourd'hui est d'acquérir les bons réflexes d'architecture et de comprendre la logique physique des signaux."}, "4": {"title": "Diapositive 1 — Pourquoi les réseaux industriels ?", "notes": "Regardez cette photo de droite : c'est l'illustration concrète de la problématique. Chaque signal physique nécessitait son propre conducteur en cuivre. Trouver un fil coupé dans une telle armoire peut paralyser un atelier pendant des heures."}, "5": {"title": "Diapositive 2 — L'évolution vers les réseaux industriels", "notes": "Voici la comparaison côte à côte. À gauche, l'approche traditionnelle fil-à-fil. À droite, l'approche réseau : un câble commun partagé. On ne transporte plus seulement un contact ouvert/fermé, mais des trames avec des diagnostics complets."}, "6": {"title": "Diapositive 3 — Classification selon le type de réseau", "notes": "Cette classification répond à la question stratégique de l'ouverture : choisit-on une solution captive propriétaire, une installation homogène monomarque plus simple à programmer, ou une installation hétérogène ouverte évitant le verrouillage fournisseur ?"}, "7": {"title": "Diapositive 4 — Classification selon le niveau du réseau", "notes": "Voici la pyramide de l'automatisation. Cliquez sur la grande pyramide pour l'agrandir. Plus on descend vers le terrain, plus le temps de réponse doit être déterministe et rapide. Plus on monte vers l'usine, plus le volume de données informatiques augmente."}, "8": {"title": "Diapositive 5 — Les protocoles selon le niveau industriel", "notes": "Chaque niveau répond à des impératifs précis. En bas, PROFIBUS PA et AS-i alimentent les capteurs sur deux fils. Au milieu, PROFIBUS DP et PROFINET synchronisent les mouvements en millisecondes. En haut, Ethernet TCP/IP et OPC UA gèrent la supervision."}, "9": {"title": "DIAPO 6 : PROFIBUS : une famille de réseaux industriels", "notes": "PROFIBUS est né de la volonté de standardiser les communications d'atelier à la fin des années 80. Observez bien sur la capture les deux couleurs normalisées : la gaine violette pour PROFIBUS DP et la gaine bleue pour PROFIBUS PA."}, "10": {"title": "Diapositive 7 — PROFIBUS DP vs PROFIBUS PA : différences", "notes": "Voici la comparaison majeure du cours. À gauche, DP privilégie la vitesse jusqu'à 12 Mégabits par seconde pour les machines rapides. À droite, PA privilégie la sécurité intrinsèque et l'alimentation deux fils à vitesse fixe de 31,25 kilobits par seconde."}, "11": {"title": "RS-485 vs MBP : Principes électriques & Analogies", "notes": "Retenez bien ces deux images mentales simples du document : le RS-485 est comme une ligne téléphonique filaire, alors que le MBP est comme un câble USB qui apporte l'énergie tout en transférant les bits d'information."}, "12": {"title": "Quand utiliser lequel ? (Exemples concrets)", "notes": "Voici deux photos concrètes d'application. À gauche, un automate Siemens S7-300 dans une armoire d'atelier câblé en DP violet. À droite, un transmetteur Rosemount haute sécurité raccordé sur une tuyauterie en PA."}, "13": {"title": "Diapositive 8 — Câblage, connecteurs et architecture physique", "notes": "Voici le matériel réel. Ne confondez jamais le nombre de broches de la prise et le nombre de fils du câble. Le câble n'a que deux conducteurs : le vert sur la borne A, et le rouge sur la borne B."}, "14": {"title": "Diapo 9 — Pourquoi 9 broches pour seulement 2 fils ?", "notes": "Voici le secret des 9 broches. Seules deux broches transportent les données : 3 et 8. Les broches 5 et 6 fournissent le 5 Volts et la masse 0 Volt nécessaires pour alimenter la résistance de terminaison de 220 Ohms intégrée dans la prise."}, "15": {"title": "4–20 mA, modules AI, câbles et connecteurs", "notes": "Avant les bus de terrain, le 4-20 milliampères était la référence absolue. Retenez bien le concept du zéro vivant à 4 milliampères qui permet de distinguer une mesure nulle d'un câble sectionné."}, "16": {"title": "Diapositive 10 — Liaison entre PROFIBUS DP et PROFIBUS PA", "notes": "Le coupleur DP/PA est la passerelle physique essentielle. Pour l'automate Siemens, les capteurs PA apparaissent comme des esclaves DP ordinaires. C'est le coupleur qui se charge en temps réel d'adapter la vitesse et la télé-alimentation."}, "17": {"title": "Diapo 11 : Ethernet — La base des réseaux modernes", "notes": "Ethernet est la base que nous utilisons tous les jours. L'analogie est très parlante : comme trois PC reliés à un switch, nous relions en usine l'automate, l'écran tactile IHM et le variateur de vitesse sur le même commutateur."}, "18": {"title": "Diapo 12 : Qu'est-ce que PROFINET ?", "notes": "Voici la formule clé à retenir pour vos examens : Ethernet fournit l'infrastructure matérielle du réseau, tandis que PROFINET apporte les mécanismes temps réel indispensables au pilotage des machines industrielles."}, "19": {"title": "Diapositive suivant — Ethernet : la base de PROFINET", "notes": "Un câble Ethernet comporte 8 fils regroupés en 4 paires torsadées. Pourquoi torsader les fils ? Parce que cette géométrie annule les rayonnements parasites entre les paires et assure une excellente immunité."}, "20": {"title": "Diapositive suivant — PROFINET : Ethernet adapté à l'industrie", "notes": "La grande force de PROFINET est de faire cohabiter sur le même câble le trafic informatique classique en TCP/IP et le trafic temps réel ultra-prioritaire PROFINET RT pour piloter les moteurs en moins d'une milliseconde."}, "21": {"title": "DIAPO SUIVANT : Identification des équipements", "notes": "En PROFINET, l'automaticien n'a pas besoin de retenir des adresses IP compliquées. Il donne un nom simple à l'appareil dans le logiciel. Si l'équipement est remplacé, l'automate le reconnaît par son nom et lui affecte automatiquement son adresse IP."}, "22": {"title": "Diapositive finale — Conclusion générale", "notes": "Pour conclure, nous avons parcouru toute l'échelle de communication industrielle, de l'instrument de mesure de procédé jusqu'à la supervision générale. Je vous remercie pour votre attention et je réponds avec grand plaisir à vos questions."}};
+
+    // Stage Auto-scaling to 16:9 viewport
+    function updateStageScale() {
+      const stage = document.getElementById('presentation-stage');
+      if (!stage) return;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const scale = Math.min(vw / 1920, vh / 1080);
+      stage.style.transform = `scale(${scale})`;
+    }
+
+    window.addEventListener('resize', updateStageScale);
+    window.addEventListener('DOMContentLoaded', () => {
+      updateStageScale();
+      initSlideFromHash();
+      initEditableName();
+      setupTouchSwipe();
+    });
+
+    // Name persistence in localStorage
+    function initEditableName() {
+      const defaultName = "Ziouane Fethi";
+      let savedName = localStorage.getItem('presenter_name');
+      if (!savedName || savedName === '[NOM]' || savedName.trim() === '') {
+        savedName = defaultName;
+        localStorage.setItem('presenter_name', defaultName);
+      }
+      const nameElements = document.querySelectorAll('.editable-name');
+      nameElements.forEach(el => el.textContent = savedName);
+      nameElements.forEach(el => {
+        el.addEventListener('input', () => {
+          const val = el.textContent;
+          nameElements.forEach(other => { if (other !== el) other.textContent = val; });
+          localStorage.setItem('presenter_name', val);
+        });
+      });
+    }
+
+    // Lightbox Modal for Large Photos
+    function openLightbox(imgSrc, captionText) {
+      const modal = document.getElementById('lightbox-modal');
+      const img = document.getElementById('lightbox-img');
+      const cap = document.getElementById('lightbox-caption');
+      img.src = imgSrc;
+      cap.textContent = captionText || 'Capture technique';
+      currentZoom = 1;
+      img.style.transform = 'scale(1)';
+      modal.classList.add('open');
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightbox-modal');
+      modal.classList.remove('open');
+    }
+
+    function zoomLightbox(delta) {
+      currentZoom = Math.max(0.5, Math.min(3, currentZoom + delta));
+      const img = document.getElementById('lightbox-img');
+      img.style.transform = `scale(${currentZoom})`;
+    }
+
+    function resetLightboxZoom() {
+      currentZoom = 1;
+      const img = document.getElementById('lightbox-img');
+      img.style.transform = 'scale(1)';
+    }
+
+    function handleLightboxClick(e) {
+      if (e.target.id === 'lightbox-modal' || e.target.classList.contains('lightbox-body')) {
+        closeLightbox();
+      }
+    }
+
+    // Navigation logic: 1 CLICK = 1 SLIDE DIRECTLY
+    function goToSlide(index) {
+      if (index < 1) index = 1;
+      if (index > TOTAL_SLIDES) index = TOTAL_SLIDES;
+
+      const prevSlideEl = document.querySelector('.slide.active');
+      if (prevSlideEl) {
+        prevSlideEl.classList.remove('active');
+      }
+
+      currentSlide = index;
+      const nextSlideEl = document.getElementById(`slide-${currentSlide}`);
+      if (nextSlideEl) {
+        nextSlideEl.classList.add('active');
+
+        // Update header & footer
+        const sec = nextSlideEl.getAttribute('data-section') || '';
+        document.getElementById('current-section-name').textContent = sec;
+        document.getElementById('current-slide-num').textContent = currentSlide;
+
+        // Update progress bar
+        const progressPct = ((currentSlide - 1) / (TOTAL_SLIDES - 1)) * 100;
+        document.getElementById('top-progress-bar').style.width = `${Math.max(4, progressPct)}%`;
+
+        // Update URL hash
+        history.replaceState(null, null, `#${currentSlide}`);
+
+        // Update speaker notes
+        updateNotesContent();
+
+        // Update active card in overview
+        document.querySelectorAll('.overview-card').forEach((card, idx) => {
+          if (idx + 1 === currentSlide) {
+            card.classList.add('current');
+          } else {
+            card.classList.remove('current');
+          }
+        });
+      }
+    }
+
+    // Direct step: ONE click goes to the next slide immediately
+    function stepNext() {
+      if (currentSlide < TOTAL_SLIDES) {
+        goToSlide(currentSlide + 1);
+      }
+    }
+
+    // Direct step: ONE click goes to previous slide immediately
+    function stepPrev() {
+      if (currentSlide > 1) {
+        goToSlide(currentSlide - 1);
+      }
+    }
+
+    function initSlideFromHash() {
+      const hash = window.location.hash.replace('#', '');
+      const parsed = parseInt(hash, 10);
+      if (!isNaN(parsed) && parsed >= 1 && parsed <= TOTAL_SLIDES) {
+        goToSlide(parsed);
+      } else {
+        goToSlide(1);
+      }
+    }
+
+    // Keyboard events
+    window.addEventListener('keydown', (e) => {
+      if (document.activeElement && document.activeElement.isContentEditable) {
+        return;
+      }
+
+      // Lightbox open shortcuts
+      const lightbox = document.getElementById('lightbox-modal');
+      if (lightbox.classList.contains('open')) {
+        if (e.key === 'Escape') {
+          closeLightbox();
+          e.preventDefault();
+          return;
+        }
+        if (e.key === '+' || e.key === '=') {
+          zoomLightbox(0.25);
+          e.preventDefault();
+          return;
+        }
+        if (e.key === '-' || e.key === '_') {
+          zoomLightbox(-0.25);
+          e.preventDefault();
+          return;
+        }
+      }
+
+      switch(e.key) {
+        case 'ArrowRight':
+        case ' ':
+        case 'PageDown':
+          e.preventDefault();
+          stepNext();
+          break;
+        case 'ArrowLeft':
+        case 'PageUp':
+          e.preventDefault();
+          stepPrev();
+          break;
+        case 'Home':
+          e.preventDefault();
+          goToSlide(1);
+          break;
+        case 'End':
+          e.preventDefault();
+          goToSlide(TOTAL_SLIDES);
+          break;
+        case 'f':
+        case 'F':
+          e.preventDefault();
+          toggleFullscreen();
+          break;
+        case 'o':
+        case 'O':
+          e.preventDefault();
+          toggleOverview();
+          break;
+        case 's':
+        case 'S':
+          e.preventDefault();
+          toggleNotes();
+          break;
+        case 'h':
+        case 'H':
+        case '?':
+          e.preventDefault();
+          toggleHelp();
+          break;
+        case 'Escape':
+          closeAllModals();
+          break;
+      }
+    });
+
+    function toggleOverview() {
+      const m = document.getElementById('overview-modal');
+      m.classList.toggle('open');
+    }
+
+    function toggleNotes() {
+      const m = document.getElementById('notes-modal');
+      m.classList.toggle('open');
+      if (m.classList.contains('open')) {
+        updateNotesContent();
+      }
+    }
+
+    function toggleHelp() {
+      const m = document.getElementById('help-modal');
+      m.classList.toggle('open');
+    }
+
+    function closeAllModals() {
+      document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
+      closeLightbox();
+    }
+
+    function handleOverlayClick(e, modalId) {
+      if (e.target.id === modalId) {
+        document.getElementById(modalId).classList.remove('open');
+      }
+    }
+
+    function updateNotesContent() {
+      const data = speakerNotes[currentSlide];
+      if (data) {
+        document.getElementById('notes-slide-title').textContent = `Diapo ${currentSlide} : ${data.title}`;
+        document.getElementById('notes-text').textContent = data.notes;
+      }
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.warn('Plein écran non disponible :', err);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Touch Swipe Detection
+    function setupTouchSwipe() {
+      let touchStartX = 0;
+      let touchStartY = 0;
+      const stage = document.getElementById('presentation-stage');
+
+      stage.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+
+      stage.addEventListener('touchend', (e) => {
+        const diffX = e.changedTouches[0].screenX - touchStartX;
+        const diffY = e.changedTouches[0].screenY - touchStartY;
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
+          if (diffX < 0) {
+            stepNext();
+          } else {
+            stepPrev();
+          }
+        }
+      }, { passive: true });
+    }
+  </script>
+</body>
+</html>
